@@ -13,7 +13,7 @@ if(isset($_POST["query"])){
         echo json_encode($output); // echo the result as JSON array
         
     } else {
-        header("location:Stock_form.php");
+        header("location:Stock.php");
     }
     exit; // stop further execution
 }
@@ -79,8 +79,8 @@ if (mysqli_num_rows($retl) > 0 ) {
             <div class="column">
                 <div class="input-box">
                     <label>Product Name</label>
-                    <input type="text" id="country" name="query" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                    <ul id="countryList"  value="<?php echo $row['Reference'] ?>" class="list-unstyled"><!-- element to display search results --></ul>
+                    <input type="text" id="country" name="query" class="form-control    ">
+                    <ul id="countryList"  value="<?php echo $row['P_id'] ?>" class="list-unstyled"><!-- element to display search results --></ul>
                 </div>
 
                 <div class="input-box">
@@ -95,6 +95,7 @@ if (mysqli_num_rows($retl) > 0 ) {
                     <label>Net Amount</label>
                     <input type="number" name="amount" value="<?php echo $row['Amount'] ?>" id="netAmount" required readonly/>
                 </div>
+<!--                 
                 <table>
                 <table>
                 <thead>
@@ -108,7 +109,7 @@ if (mysqli_num_rows($retl) > 0 ) {
                 </tr>
                 
                 </tbody>
-                </table>
+                </table> -->
 </div>
             <input type="submit" name="submit" value="Submit" class="mt-4 btn btn-danger ">
             <!-- <div class="form-group submitButtonFooter">
@@ -169,7 +170,7 @@ $(document).ready(function (){
             data: {query: selectedProduct},
             dataType: 'json',
             success: function(data){
-                $('#country').val(data[0].Code);
+                $('#country').val(data[0].Id);
                 $('#costInput').val(data[0].Purchase_Price);
             },
             error: function(xhr, status, error) {

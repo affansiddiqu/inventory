@@ -9,18 +9,19 @@ $row = mysqli_fetch_assoc($result);
 $maxCode = $row['max_code'];
 $newCode = 'SA-' . str_pad($maxCode + 1, 5, '0', STR_PAD_LEFT);
 
-
 if (isset($_POST['submit'])) {
     for ($i = 0; $i < count($_POST['query']); $i++) {
-        $pid = $_POST['query'][$i];
+        $pid = $_POST['pid'][$i];
         $type = $_POST['stock'][$i];
         $date = $_POST['date'][$i];
+        $reference = $_POST['query'][$i];
         $quantity = $_POST['quantity'][$i];
         $cost = $_POST['cost'][$i];
         $amount = $_POST['amount'][$i];
 
-        if ($type !== '' && $date !== '' && $quantity !== '' && $cost !== '' && $amount !== '') {
-            $insertProduct = "INSERT INTO `stock` (`P_id`, `Type`, `Date`, `Cost`, `Quantity`, `Amount`) VALUES ('$pid', '$type', '$date', '$cost', '$quantity', '$amount')";
+        // Validate input values
+        if (($pid) &&($type) && ($date) && ($reference) && ($quantity) &&($cost) && ($amount)) {
+            $insertProduct = "INSERT INTO `stock` (`P_id`, `Type`, `Date`,`Reference`, `Cost`, `Quantity`, `Amount`) VALUES ('$pid', '$type', '$date','$reference' ,'$cost', '$quantity', '$amount')";
             $resultProduct = mysqli_query($connect, $insertProduct);
             if ($resultProduct) {
                 echo "<script>alert('Add Stock successful');</script>";
@@ -32,6 +33,7 @@ if (isset($_POST['submit'])) {
         }
     }
 }
+
 
 if(isset($_POST["query"])){
     $output = array();
@@ -65,11 +67,12 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
         <script src="https://use.fontawesome.com/ccb21b5b72.js"></script>
     <script src="script.js"></script>
 </head>
+<!-- jb user add row kre tw adjustment type or date wohi jae database me jo phle fill -->
 <body>
     <section class="container">
         <header>Add Stock</header>
         <!-- Form -->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form" method="post">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form" id="stockForm" method="post">
         
         <div class="input-box">
             <!-- <label>S no</label> -->
@@ -101,8 +104,13 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
             <div class="column">
                 <div class="input-box">
                     <label>Product Name</label>
-                    <input type="text" id="country" name="query[]" class="product-search" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input type="text" name="query[]" class="product-search" id="country">
                     <ul id="countryList" class="list-unstyled "><!-- element to display search results --></ul>
+                </div>
+                
+            <div class="input-box">
+                    <label for="costInput">Product Id</label>
+                    <input type="number" name="pid[]" id="costInput" required class="pid"/>
                 </div>
                 
                 <div class="input-box">
@@ -117,10 +125,13 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
                     <label>Net Amount</label>
                     <input type="number" name="amount[]" id="netAmount" required class="amountInput"/>
                 </div>
-                <button type="button" name="addrow" id="addrow" ><font-awesome-icon icon="check" /> add row</button>
+                <i class="fa-solid fa-arrow-down mt-5" name="addrow" id="addrow">
+                <!-- <input type="submit" name="addrow" id="addrow"></in> -->
+                </i>
                 <!-- <input name="addrow" id="addrow" value="add Row"  class="btn btn-danger" > -->
             </div>
         </div>
+        
                 <div id="next"></div>
 
             <input type="submit" name="submit" value="Submit" class="mt-4 btn btn-danger ">
@@ -131,165 +142,34 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
                     
                 </form>
             </section>
-            
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- updated jQuery CDN link -->
-            
+
+            <!-- or jb data submit hu tw adjustment type or date wo hi jae jo gi database me chiye jitni bh row add krlo -->
             <script>
-                $(document).ready(function() {
-                    // Product search functionality
-                    $(document).on('keyup', '.product-search', function() {
-                        var query = $(this).val();
-                        var currentInput = $(this);
-                        var resultList = currentInput.parent().siblings('.list-item');
-                        
-                        if (query !== '') {
-                            $.ajax({
-                        url: "<?php echo $_SERVER['PHP_SELF']; ?>",
-                        method: "post",
-                        data: {
-                            query: query
-                        },
-                        dataType: 'json',
-                        success: function(data) {
-                            resultList.empty();
-                            if (data.hasOwnProperty('error')) {
-                                resultList.append('<li class="list-item">' + data.error + '</li>');
-                            } else {
-                                $.each(data, function(index, value) {
-                                    resultList.append('<li class="list-item">' + value.Name + '</li>');
-                                });
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            resultList.empty();
-                            resultList.append('<li class="list-item">Error: ' + xhr.responseJSON.error + '</li>');
-                        }
-                    });
-                } else {
-                    resultList.empty();
-                }
-            });
-
-            // Select product from search result
-            $(document).on('click', '.list-item', function() {
-                var selectedProduct = $(this).text();
-                $(this).closest('.input-group').find('.product-search').val(selectedProduct);
-                $(this).parent().empty();
-            });
-        });
-    
-        $(document).ready(function (){
-    $('#country').keyup(function (){
+            $(document).ready(function () {
+    // Event delegation for product search functionality
+    $(document).on('keyup', '.product-search', function () {
         var query = $(this).val();
-
-        if(query != ''){
-            $.ajax({
-                url: "<?php echo $_SERVER['PHP_SELF']; ?>",
-                method: "post",
-                data: {query: query},
-                dataType: 'json',
-                success: function(data){
-                    $('#countryList').fadeIn();
-                    $('#countryList').html('');
-                    if(data.hasOwnProperty('error')) {
-                        $('#countryList').append('<li>' + data.error + '</li>');
-                    } else {
-                        $.each(data, function(index, value) {
-                            $('#countryList').append('<li class="list-item">' + value.Name + '</li>');
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    $('#countryList').html('<li>' + xhr.responseJSON.error + '</li>');
-                }
-            });
-        }
-        else{
-            $('#countryList').fadeOut();
-        }
-    });
-
-    $(document).on('click', '.list-item', function(){
-        var selectedProduct = $(this).text();
-        $('#country').val(selectedProduct);
-        $('#countryList').fadeOut();
-
-        // Fetch the product code of the selected product from the server
-        $.ajax({
-            url: "<?php echo $_SERVER['PHP_SELF']; ?>",
-            method: "post",
-            data: {query: selectedProduct},
-            dataType: 'json',
-            success: function(data){
-                $('#country').val(data[0].Id);
-                $('#costInput').val(data[0].Purchase_Price);
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    });
-    
-    $('#quantity').keyup(function (){
-        var quantity = $(this).val();
-        var cost = $('#costInput').val();
-        $('#netAmount').val(quantity * cost);
-    });
-});
-$('#addrow').click(function (){
-    var length = $('.si').length; // Corrected spelling of 'length'
-    var i = parseInt(length) + 1;
-    var newrow = `
-    <div class="column">
-        <div class="input-box">
-            <input type="text" name="query[]" class="form-control product-search" aria-describedby="emailHelp">
-            <ul class="list-unstyled countryList"><!-- element to display search results --></ul>
-        </div>
-
-        <div class="input-box">
-            <input type="number" name="cost[]" class="costInput" required/>
-        </div>
-        <div class="input-box">
-            <input type="text" name="quantity[]" class="quantityInput" required class="form-control">
-        </div>
-        <div class="input-box">
-            <input type="number" name="amount[]" class="amountInput" required readonly/>
-        </div>
-    </div>`;
-
-    $('#next').append(newrow);
-});
-
-$(document).on('keyup', '.quantityInput', function (){
-    var quantity = $(this).val();
-    var cost = $(this).closest('.column').find('.costInput').val();
-    var netAmount = quantity * cost;
-    $(this).closest('.column').find('.amountInput').val(netAmount);
-});
-
-$(document).ready(function (){
-    // Product search functionality
-    $(document).on('keyup', '.product-search', function() {
-        var query = $(this).val();
-        var resultList = $(this).parent().siblings('.countryList');
-
+        var currentInput = $(this);
+        var resultList = currentInput.siblings('.list-unstyled');
+        
         if (query !== '') {
             $.ajax({
                 url: "<?php echo $_SERVER['PHP_SELF']; ?>",
                 method: "post",
-                data: {query: query},
+                data: { query: query },
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
                     resultList.empty();
                     if (data.hasOwnProperty('error')) {
                         resultList.append('<li class="list-item">' + data.error + '</li>');
                     } else {
-                        $.each(data, function(index, value) {
+                        $.each(data, function (index, value) {
                             resultList.append('<li class="list-item">' + value.Name + '</li>');
                         });
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     resultList.empty();
                     resultList.append('<li class="list-item">Error: ' + xhr.responseJSON.error + '</li>');
                 }
@@ -299,38 +179,77 @@ $(document).ready(function (){
         }
     });
 
-    // Select product from search result
-    $(document).on('click', '.list-item', function() {
+    // Event delegation for selecting product from search results
+    $(document).on('click', '.list-item', function () {
         var selectedProduct = $(this).text();
-        $(this).closest('.input-box').find('.product-search').val(selectedProduct);
+        var parent = $(this).closest('.input-box');
+        parent.find('.product-search').val(selectedProduct);
         $(this).parent().empty();
+
+        // Fetch product details
+        $.ajax({
+            url: "<?php echo $_SERVER['PHP_SELF']; ?>",
+            method: "post",
+            data: { query: selectedProduct },
+            dataType: 'json',
+            success: function (data) {
+                // parent.find('.product-search').val(data[0].Id);
+                parent.siblings('.input-box').find('.costInput').val(data[0].Purchase_Price);
+                parent.siblings('.input-box').find('.pid').val(data[0].Id);
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
     });
+
+    // Calculate amount on quantity input
+    $(document).on('input', '.quantityInput, .costInput', function () {
+        var row = $(this).closest('.column');
+        var quantity = row.find('.quantityInput').val();
+        var cost = row.find('.costInput').val();
+        var netAmount = quantity * cost;
+        row.find('.amountInput').val(netAmount);
+    });
+
+    // Add new row
+    $('#addrow').click(function () {
+        var newrow = `
+        
+            <div class="input-box">
+                <input readonly name="si[]" type="hidden" id="si" value="1" required />
+            </div>
+            <div class="column">
+                <div class="input-box">
+                    <input type="text" name="query[]" class="product-search" id="country">
+                    <ul class="list-unstyled countryList"></ul>
+                </div>
+            <div class="input-box">
+                    <input type="number" name="pid[]" id="pid" required class="pid"/>
+                </div>
+                <div class="input-box">
+                    <input type="number" name="cost[]" class="costInput" required/>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="quantity[]" class="quantityInput" required/>
+                </div>
+                <div class="input-box">
+                    <input type="number" name="amount[]" class="amountInput" required readonly/>
+                </div>
+            </div>`;
+    // adjustment type get hokr uppr se neeche row by deaful ajae
+    $('#next').append(newrow);
 });
-$.ajax({
-    url: "<?php echo $_SERVER['PHP_SELF']; ?>",
-    method: "post",
-    data: {query: query},
-    dataType: 'json',
-    success: function(data) {
-        console.log(data); // Add this line to check the response data in the browser console
-        resultList.empty();
-        if (data.hasOwnProperty('error')) {
-            resultList.append('<li class="list-item">' + data.error + '</li>');
-        } else {
-            $.each(data, function(index, value) {
-                resultList.append('<li class="list-item">' + value.Name + '</li>');
-            });
-        }
-    },
-    error: function(xhr, status, error) {
-        console.log(error); // Add this line to check for any errors in the AJAX request
-        resultList.empty();
-        resultList.append('<li class="list-item">Error: ' + xhr.responseJSON.error + '</li>');
-    }
+$(document).on('change', 'select[name="stock[]"], input[name="date[]"]', function() {
+        var type = $(this).val();
+        var date = $(this).closest('.column').find('input[name="date[]"]').val();
+        $(this).closest('.column').find('input[name="stock[]"]').val(type);
+        $(this).closest('.column').find('input[name="date[]"]').val(date);
+    });
+
 });
-
-            </script>
-
-
+    </script>
 </body>
 </html>
+
+<!-- adjustment type or date first row me se Fetchhokr har row me hidden hojae submit krty wqt insert hojae -->
