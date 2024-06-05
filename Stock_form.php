@@ -102,15 +102,11 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
             <br>
             
             <div class="column">
+                
                 <div class="input-box">
                     <label>Product Name</label>
                     <input type="text" name="query[]" class="product-search" id="country">
                     <ul id="countryList" class="list-unstyled "><!-- element to display search results --></ul>
-                </div>
-                
-            <div class="input-box">
-                    <label for="costInput">Product Id</label>
-                    <input type="number" name="pid[]" id="costInput" required class="pid"/>
                 </div>
                 
                 <div class="input-box">
@@ -125,12 +121,12 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
                     <label>Net Amount</label>
                     <input type="number" name="amount[]" id="netAmount" required class="amountInput"/>
                 </div>
-                <i class="fa-solid fa-arrow-down mt-5" name="addrow" id="addrow">
-                <!-- <input type="submit" name="addrow" id="addrow"></in> -->
-                </i>
-                <!-- <input name="addrow" id="addrow" value="add Row"  class="btn btn-danger" > -->
-            </div>
-        </div>
+                <div class="input-box">
+                    <input type="hidden" name="pid[]" id="costInput" required class="pid"/>
+                </div>
+                <i class="fa-solid fa-arrow-down mt-5" name="addrow" id="addrow"></i>
+</div>
+</div>
         
                 <div id="next"></div>
 
@@ -212,44 +208,47 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
         row.find('.amountInput').val(netAmount);
     });
 
-    // Add new row
-    $('#addrow').click(function () {
-        var newrow = `
-        
-            <div class="input-box">
-                <input readonly name="si[]" type="hidden" id="si" value="1" required />
-            </div>
-            <div class="column">
+// Add new row
+$('#addrow').click(function () {
+    var newrow = `<div class="column">
                 <div class="input-box">
                     <input type="text" name="query[]" class="product-search" id="country">
-                    <ul class="list-unstyled countryList"></ul>
+                    <ul id="countryList" class="list-unstyled "><!-- element to display search results --></ul>
                 </div>
+                
+                <div class="input-box">
+                    <input type="number" name="cost[]" id="costInput" required class="costInput"/>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="quantity[]" id="quantity" required class="quantityInput">
+                </div>
+                <div class="input-box">
+                    <input type="number" name="amount[]" id="netAmount" required class="amountInput"/>
+                </div>
+                
             <div class="input-box">
-                    <input type="number" name="pid[]" id="pid" required class="pid"/>
-                </div>
-                <div class="input-box">
-                    <input type="number" name="cost[]" class="costInput" required/>
-                </div>
-                <div class="input-box">
-                    <input type="text" name="quantity[]" class="quantityInput" required/>
-                </div>
-                <div class="input-box">
-                    <input type="number" name="amount[]" class="amountInput" required readonly/>
-                </div>
-            </div>`;
-    // adjustment type get hokr uppr se neeche row by deaful ajae
+                    <input type="hidden" name="pid[]" id="costInput" required class="pid"/>
+                </div>                
+                <i class="fa-solid fa-xmark btnremove"></i></div> 
+
+`;
+
+    // Get adjustment type and date from the first row
+    var adjustmentType = $('select[name="stock[]"]:first').val();
+    var adjustmentDate = $('input[name="date[]"]:first').val();
+
+    // Add adjustment type and date to the new row
+    newrow += `
+        <input type="hidden" name="stock[]" value="${adjustmentType}">
+        <input type="hidden" name="date[]" value="${adjustmentDate}">`;
+
     $('#next').append(newrow);
 });
-$(document).on('change', 'select[name="stock[]"], input[name="date[]"]', function() {
-        var type = $(this).val();
-        var date = $(this).closest('.column').find('input[name="date[]"]').val();
-        $(this).closest('.column').find('input[name="stock[]"]').val(type);
-        $(this).closest('.column').find('input[name="date[]"]').val(date);
-    });
 
+$('body').on('click' , '.btnremove' , function(){
+    $(this).closest('div').remove()
+})
 });
     </script>
 </body>
 </html>
-
-<!-- adjustment type or date first row me se Fetchhokr har row me hidden hojae submit krty wqt insert hojae -->

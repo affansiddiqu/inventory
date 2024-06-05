@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2024 at 12:35 PM
+-- Generation Time: Jun 05, 2024 at 02:50 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -46,7 +46,9 @@ INSERT INTO `products` (`Id`, `Code`, `Name`, `Measurement`, `Category`, `Sales_
 (266, 'P-00001', 'HS White', 'Kg', 'Tshirt', 12, 11, 1),
 (275, 'P-00002', 'HS Black', 'Pc', 'Tshirt', 390, 280, 1),
 (276, 'P-00003', 'HS Navy Blue S', 'Pc', 'Tshirt', 23, 12, 1),
-(277, 'P-00004', 'HS Yellow S', 'Pc', 'Tshirt', 310, 280, 1);
+(277, 'P-00004', 'HS Yellow S', 'Pc', 'Tshirt', 310, 280, 1),
+(278, 'P-00005', 'HS Pink S', 'Pc', 'Tshirt', 310, 280, 1),
+(279, 'P-00006', 'HS Green', 'Kg', 'Hoodies', 390, 330, 1);
 
 --
 -- Triggers `products`
@@ -115,35 +117,21 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`Id`, `P_id`, `SCode`, `Type`, `Date`, `Reference`, `Cost`, `Quantity`, `Amount`, `Status`) VALUES
-(150, 266, 'SA-00001', 'Opening Stock', '2024-06-06', '', 11, 1, 11, 1),
-(171, 275, 'SA-00002', 'Opening Stock', '2024-06-07', 'HS Black', 280, 1, 280, 1),
-(172, 266, 'SA-00003', 'Opening Stock', '2024-06-14', 'HS White', 11, 1, 11, 1),
-(173, 266, 'SA-00004', 'Lost of Theft', '2024-06-04', 'HS White', 11, 1, 11, 1),
-(174, 275, 'SA-00005', 'Lost of Theft', '2024-06-13', 'HS Black', 280, 1, 280, 1),
-(175, 266, 'SA-00006', 'Inward Stock', '2024-06-12', 'HS White', 11, 1, 11, 1),
-(176, 266, 'SA-00007', 'Lost of Theft', '2024-05-30', 'HS White', 11, 1, 11, 1),
-(177, 266, 'SA-00008', 'Opening Stock', '2024-06-01', 'HS White', 11, 1, 11, 1),
-(178, 276, 'SA-00009', 'Opening Stock', '2024-06-06', 'HS Navy Blue S', 12, 1, 12, 1),
-(179, 275, 'SA-00010', 'Lost of Theft', '2024-05-31', 'HS Black', 280, 3, 840, 1),
-(180, 266, 'SA-00011', 'Lost of Theft', '2024-06-06', 'HS Black', 11, 1, 1, 1),
-(182, 266, 'SA-00012', 'Lost of Theft', '2024-06-06', 'HS Black', 11, 1, 1, 1),
-(183, 266, 'SA-00013', 'Inward Stock', '2024-06-07', 'HS White', 11, 1, 11, 1),
-(184, 276, 'SA-00014', 'Opening Stock', '0001-02-01', 'HS Navy Blue S', 12, 2, 24, 1),
-(185, 266, 'SA-00015', 'Lost of Theft', '2024-06-14', 'HS White', 11, 1, 11, 1),
-(186, 266, 'SA-00016', 'Opening Stock', '2024-05-02', 'HS Black', 1, 2, 2, 1),
-(187, 266, 'SA-00017', 'Lost of Theft', '2024-06-01', 'HS Black', 2, 2, 1, 1),
-(189, 266, 'SA-00018', 'Lost of Theft', '2024-06-01', 'HS Black', 2, 2, 1, 1),
-(191, 266, 'SA-00019', 'Lost of Theft', '2024-06-01', 'HS Black', 2, 2, 1, 1),
-(192, 266, 'SA-00020', 'Inward Stock', '0001-01-01', 'HS White', 11, 2, 22, 1),
-(193, 275, 'SA-00021', 'Opening Stock', '2024-06-13', 'HS Black', 280, 2, 560, 1),
-(194, 275, 'SA-00022', 'Opening Stock', '0002-02-01', 'HS Black', 280, 2, 560, 1),
-(195, 275, 'SA-00023', 'Inward Stock', '2024-06-08', 'HS Black', 280, 2, 560, 1),
-(196, 275, 'SA-00024', 'Opening Stock', '2024-06-05', 'HS Black', 280, 2, 560, 1),
-(197, 266, 'SA-00025', 'Opening Stock', '2024-06-05', 'HS White', 11, 1, 11, 1),
-(198, 277, 'SA-00026', 'Opening Stock', '2024-06-03', 'HS Yellow S', 280, 100, 28000, 1),
-(199, 277, 'SA-00027', 'Opening Stock', '2024-06-03', 'HS Yellow S', 280, 100, 28000, 1),
-(200, 275, 'SA-00028', 'Inward Stock', '2024-05-30', 'HS Black', 280, 1, 280, 1),
-(201, 275, 'SA-00029', 'Opening Stock', '0011-02-01', 'HS Black', 280, 22, 6160, 1);
+(233, 276, 'SA-00001', 'Inward Stock', '2024-07-04', 'HS Navy Blue S', 12, 1, 12, 1),
+(234, 278, 'SA-00002', 'Opening Stock', '2024-06-07', 'HS Navy Blue S', 12, 1, 12, 1),
+(235, 276, 'SA-00003', 'Inward Stock', '2024-06-11', 'HS Navy Blue S', 12, 21, 252, 1),
+(236, 277, 'SA-00004', 'Lost of Theft', '2024-05-31', 'HS Yellow S', 280, 1, 280, 1),
+(237, 275, 'SA-00005', 'Lost of Theft', '2024-05-31', 'HS Black', 280, 2, 560, 1),
+(238, 276, 'SA-00006', 'Opening Stock', '2024-06-07', 'HS Navy Blue S', 12, 2, 24, 1),
+(239, 275, 'SA-00007', 'Opening Stock', '2024-06-07', 'HS Black', 280, 2, 560, 1),
+(240, 278, 'SA-00008', 'Opening Stock', '2024-06-07', 'HS Pink S', 280, 2, 560, 1),
+(241, 277, 'SA-00009', 'Opening Stock', '2024-06-07', 'HS Yellow S', 280, 2, 560, 1),
+(242, 275, 'SA-00010', 'Inward Stock', '2024-06-13', 'HS Black', 280, 3, 840, 1),
+(243, 278, 'SA-00011', 'Inward Stock', '2024-06-13', 'HS Pink S', 280, 22, 6160, 1),
+(244, 278, 'SA-00012', 'Lost of Theft', '2024-06-01', 'HS Pink S', 280, 2, 560, 1),
+(245, 276, 'SA-00013', 'Lost of Theft', '2024-06-01', 'HS Navy Blue S', 12, 1, 12, 1),
+(246, 276, 'SA-00014', 'Lost of Theft', '2024-06-01', 'HS Navy Blue S', 12, 1, 12, 1),
+(247, 266, 'SA-00015', 'Lost of Theft', '2024-06-01', 'HS White', 11, 1, 11, 1);
 
 --
 -- Triggers `stock`
@@ -196,7 +184,7 @@ ALTER TABLE `stock`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `Id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=278;
+  MODIFY `Id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=280;
 
 --
 -- AUTO_INCREMENT for table `signup`
@@ -208,7 +196,7 @@ ALTER TABLE `signup`
 -- AUTO_INCREMENT for table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=202;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=248;
 
 --
 -- Constraints for dumped tables
