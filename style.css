@@ -1,0 +1,384 @@
+/* login */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: #e7e7e7;
+  font-family:  "Poppins", sans-serif;
+}
+#toggleIcon {
+    float: right; /* Aligns the icon to the right */
+    margin-top: 10px; /* Adjust as needed for vertical alignment */
+}
+
+.login-form {
+  width: 400px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  color: black;
+}
+.display-nowrap{
+  background: #000;
+}
+
+#example{
+  background: #000;
+  color: #f44336;
+}
+
+
+.login-form h1 {
+  font-size: 40px;
+  text-align: center;
+  text-transform: capitalize;
+  margin: 40px 0;
+}
+
+.login-form p {
+  font-size: 18px;
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+.login-form input {
+  font-size: 14px;
+  width: 100%;
+  padding: 15px 10px;
+  border: 1;
+  outline: none;
+  border-radius: 10px;
+}
+
+.login-form button {
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: capitalize;
+  margin: 50px 100px;
+  position: relative;
+  padding: 10px 15px;
+  width: 50%;
+  border-radius: 5px;
+  border: 0;
+  background-color: #f44336;
+  color: white;
+  cursor: pointer;
+}
+
+.login-form button:hover {
+  background-color: #f44336e1;
+  color: white;
+}
+
+/* Navigation Menu */
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  position: fixed;
+  width: 100%;
+  height: 8vh;
+  box-sizing: border-box;
+  padding: 10px 5%;
+  box-shadow: 0 0 15px;
+  color: rgba(166, 166, 166, 0.9);
+  z-index: 1;
+
+}
+
+.logo img {
+  width: 40px;
+  display: inline-block;
+}
+
+.dropbtn {
+  background-color: white;
+  color: black;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  color: #f44336;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  font-size: 14px;
+  background-color:  white;
+  min-width: 130px;
+  overflow: auto;
+  box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.2);
+  right: 0;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a .fa{
+  padding-right: 15px;
+}
+
+.dropdown a:hover {
+  color: #f44336;
+}
+
+.show {
+  display: block;
+}
+
+/* Sidebar Menu */
+
+/* Fixed sidenav, full height */
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: white;
+  overflow-x: hidden;
+  padding-top: 70px;
+}
+
+/* Style the sidenav links and the dropdown button */
+.sidenav a, .dropdown-btn {
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 14px;
+  color: black;
+  display: block;
+  border: none;
+  background: none;
+  width:100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+/* On mouse-over */
+.sidenav a:hover, .dropdown-btn:hover {
+  color: #f44336;
+}
+
+.sidenav ol li a{
+  font-size: 12px;
+}
+
+.sidenav .fa{
+  padding-right: 15px;
+}
+
+/* Main content */
+.main {
+  margin-left: 200px; /* Same as the width of the sidenav */
+  font-size: 20px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+/* Add an active class to the active dropdown button */
+.active {
+  background-color: white;
+  color: black;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+  display: none;
+  background-color: white;
+  padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+  float: right;
+  padding-right: 8px;
+}
+
+/* knittingcard */
+
+.container {
+  position: relative;
+  float: left;
+  width: calc(100% - 290px);
+  margin-left: 220px;
+  margin-top: 65px;
+  background-color: white;
+  padding: 25px;
+  border-radius: 5px;
+  box-shadow: 0px 8px 8px 0px rgba(0,0,0,0.1);
+}
+
+.container header {
+  font-size: 18px;
+  color: black;
+  font-weight: bold;
+  text-align: left;
+  float: left;
+}
+
+.add_knittingcard_button {
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  background-color: #f44336;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: bold;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.fa-plus{
+  padding-right: 8px;
+}
+
+.add_knittingcard_button:hover {
+  background-color: #f44336e1;
+  color: white;
+}
+
+.filter_button {
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  background-color: #f44336;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: bold;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.fa-filter{
+  padding-right: 8px;
+}
+
+.filter_button:hover {
+  background-color: #f44336e1;
+  color: white;
+}
+
+
+/* knitting_form */
+
+.container .form {
+  margin-top: 60px;
+  font-size: 14px;
+}
+
+.form .input-box {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.input-box label {
+  font-size: 12px;
+  color: #333;
+}
+
+.form :where(.input-box input, .select-box) {
+  position: relative;
+  height: 30px;
+  width: 80%;
+  outline: none;
+  font-size: 12px;
+  color: #707070;
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0 15px;
+}
+
+.input-box input:focus {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.form .column {
+  display: flex;
+  column-gap: 15px;
+}
+
+.form :where(.job-option, .job) {
+  display: flex;
+  align-items: center;
+  column-gap: 50px;
+  flex-wrap: wrap;
+}
+.form .job {
+  column-gap: 5px;
+}
+.job input {
+  accent-color: #f44336;
+}
+.form :where(.job input, .job label) {
+  cursor: pointer;
+}
+.job label {
+  color: #707070;
+}
+.address :where(input, .select-box) {
+  margin-top: 15px;
+}
+.select-box select {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: #707070;
+  font-size: 1rem;
+}
+.form button {
+  height: 55px;
+  width: 100%;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 30px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #f44336;
+}
+.form button:hover {
+    background-color: #f44336e1;
+}
+/*Responsive*/
+@media screen and (max-width: 500px) {
+  .form .column {
+    flex-wrap: wrap;
+  }
+  .form :where(.gender-option, .gender) {
+    row-gap: 15px;
+  }
+}
+
+  
