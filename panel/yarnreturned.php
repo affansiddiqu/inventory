@@ -1,5 +1,5 @@
 <?php
-require('dashboard.php');
+require('index.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,7 +21,7 @@ require('dashboard.php');
 <section class="container">
     <div>
         <header>Knitting</header>
-        <button type="button" onclick="location.href='knittingcard_form.php'" class="add_knittingcard_button" style="float: right;"><i class="fa fa-plus" aria-hidden="true"></i>Add Knitting Card</button>
+        <button type="button" onclick="location.href='yarnreturned_form.php'" class="add_knittingcard_button" style="float: right;"><i class="fa fa-plus" aria-hidden="true"></i>Add Yarn Returned</button>
     </div>
 
 <br>

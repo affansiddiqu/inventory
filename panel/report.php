@@ -1,6 +1,6 @@
 <?php
 require('config.php');
-require('dashboard.php');
+require('index.php');
 
 // Fetch product data with total quantity, amount, and average amount where quantity is greater than zero or equal to zero but not empty
 

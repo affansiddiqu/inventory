@@ -1,6 +1,5 @@
 <?php
-require('config.php');
-require('dashboard.php');
+require('index.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,13 +17,25 @@ require('dashboard.php');
 </head>
 <body>
 
-<!--Inventory_form-->
+<!--Knittingcard_form-->
 
 <section class="container">
 
-    <header>Inventory Card</header>
+    <header>Knitting Card</header>
     
-    <form action="invent_form.php" class="form" method="post">
+    <form action="#" class="form">
+<!--             
+            <div class="job">
+                <input type="radio" id="new" name="job" checked />
+              <label for="new">New</label>
+            </div>
+
+            <div class="job">
+              <input type="radio" id="existing" name="job" />
+              <label for="existing">Existing</label>
+            </div>
+
+        </div> -->
 
         <div class="column">
    
@@ -82,8 +93,7 @@ require('dashboard.php');
      </div>
 </div>
 <input type="button" value="Submit" class="mt-5 btn btn-outline-danger ">
-
-<!-- <button class="text-center">Submit</button> -->
+        <!-- <button class="text-center">Submit</button> -->
       </form>
 
 </section>

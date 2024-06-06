@@ -1,7 +1,7 @@
 <?php
 
 require('config.php');
-require('dashboard.php');
+require('index.php');
 
 $query = "SELECT MAX(SUBSTRING(`Code`, 3)) AS max_code FROM `products`";
 $result = mysqli_query($connect, $query);

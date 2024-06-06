@@ -16,7 +16,7 @@ if (isset($_POST['submit'])) {
          if($password_check){
             session_start();
             $_SESSION['Username'] = $login['Username'];
-            header('location: dashboard.php');
+            header('location: index.php');
          }else{
             echo "<script> alert('Invalid Username/Password')</script>";
          }

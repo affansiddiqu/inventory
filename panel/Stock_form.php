@@ -50,7 +50,7 @@ if(isset($_POST["query"])){
     exit;
 }
 
-require('dashboard.php'); // Assuming this file contains necessary dashboard functions
+require('index.php'); // Assuming this file contains necessary dashboard functions
 ?>
 
 <!DOCTYPE html>
@@ -82,12 +82,12 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
         <div class="column">       
             <div class="input-box">
                 <label>Stock SKU Code</label>
-                <input readonly name="number" value="<?php echo $newCode ;?>" required /> 
+                <input readonly name="number" class="border border-dark" value="<?php echo $newCode ;?>" required /> 
             </div>
             
-            <div class="input-box mt-3">
+            <div class="input-box mt-3 me-5">
                 <label for="text">Adjustment Stock</label>
-                <select class="form-select form-select-sm" name="stock[]">
+                <select class="form-select form-select-sm border border-dark" name="stock[]">
                     <option value="Opening Stock">Opening Stock</option>
                     <option value="Inward Stock">Inward Stock</option>
                     <option value="Lost of Theft">Lost of Theft</option>
@@ -95,31 +95,30 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
             </div>
             <div class="input-box">
                 <label>Current Date</label>
-                <input type="date" name="date[]" required/>
+                <input type="date" name="date[]" class="border border-dark" required/>
             </div>
             </div>
-            <!-- pcode pname net quantity net amount  -->
             <br>
             
             <div class="column">
                 
                 <div class="input-box">
                     <label>Product Name</label>
-                    <input type="text" name="query[]" class="product-search" id="country">
+                    <input type="text" name="query[]" class="product-search border border-dark" id="country">
                     <ul id="countryList" class="list-unstyled "><!-- element to display search results --></ul>
                 </div>
                 
                 <div class="input-box">
                     <label for="costInput">Cost of Stock</label>
-                    <input type="number" name="cost[]" id="costInput" required class="costInput"/>
+                    <input type="number" name="cost[]" id="costInput" required class="costInput border border-dark"/>
                 </div>
                 <div class="input-box">
                     <label>Stock Quantity</label>
-                    <input type="text" name="quantity[]" id="quantity" required class="quantityInput">
+                    <input type="text" name="quantity[]" id="quantity" required class="quantityInput border border-dark">
                 </div>
                 <div class="input-box">
                     <label>Net Amount</label>
-                    <input type="number" name="amount[]" id="netAmount" required class="amountInput"/>
+                    <input type="number" name="amount[]" id="netAmount" required class="amountInput border border-dark"/>
                 </div>
                 <div class="input-box">
                     <input type="hidden" name="pid[]" id="costInput" required class="pid"/>
@@ -131,16 +130,11 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
                 <div id="next"></div>
 
             <input type="submit" name="submit" value="Submit" class="mt-4 btn btn-danger ">
-            <!-- <input value="Addrow" name="addrow" id="addrow"> -->
-            <!-- <div class="form-group submitButtonFooter">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="button" class="btn btn-success" onclick="addRow()" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button> -->
                     
                 </form>
             </section>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- updated jQuery CDN link -->
 
-            <!-- or jb data submit hu tw adjustment type or date wo hi jae jo gi database me chiye jitni bh row add krlo -->
             <script>
             $(document).ready(function () {
     // Event delegation for product search functionality
@@ -212,24 +206,24 @@ require('dashboard.php'); // Assuming this file contains necessary dashboard fun
 $('#addrow').click(function () {
     var newrow = `<div class="column">
                 <div class="input-box">
-                    <input type="text" name="query[]" class="product-search" id="country">
+                    <input type="text" name="query[]" class="product-search border border-dark" id="country">
                     <ul id="countryList" class="list-unstyled "><!-- element to display search results --></ul>
                 </div>
                 
                 <div class="input-box">
-                    <input type="number" name="cost[]" id="costInput" required class="costInput"/>
+                    <input type="number" name="cost[]" id="costInput" required class="costInput border border-dark"/>
                 </div>
                 <div class="input-box">
-                    <input type="text" name="quantity[]" id="quantity" required class="quantityInput">
+                    <input type="text" name="quantity[]" id="quantity" required class="quantityInput border border-dark">
                 </div>
                 <div class="input-box">
-                    <input type="number" name="amount[]" id="netAmount" required class="amountInput"/>
+                    <input type="number" name="amount[]" id="netAmount" required class="amountInput border border-dark"/>
                 </div>
                 
             <div class="input-box">
-                    <input type="hidden" name="pid[]" id="costInput" required class="pid"/>
+                    <input type="hidden" name="pid[]" id="costInput" required class="pid border border-dark"/>
                 </div>                
-                <i class="fa-solid fa-xmark btnremove"></i></div> 
+                    <i class="fa-solid fa-xmark btnremove"></i></div> 
 
 `;
 
@@ -249,6 +243,7 @@ $('body').on('click' , '.btnremove' , function(){
     $(this).closest('div').remove()
 })
 });
+
     </script>
 </body>
 </html>

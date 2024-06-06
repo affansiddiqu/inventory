@@ -1,6 +1,6 @@
 <?php
 require('config.php');
-require('dashboard.php');
+require('index.php');
 
 $Product_id = $_GET['Id']; 
 
@@ -85,13 +85,16 @@ if (mysqli_num_rows($retl) > 0 ) {
                     <input type="number" name="Pprice" required value="<?php echo $row['Purchase_Price']?>" />
                 </div>
             </div>
-            <input type="submit" name="submit" value="Update Details" class="mt-4 btn btn-outline-danger ">
-        </form>
-      
-      <?php
+            </div>
+                <input type="submit" name="submit" value="Update Details" class="mt-4 btn btn-danger ">
+
+            </form>
+            
+            <?php
      }
     }
     ?>
+    </section>  
 
 </body>
 </html>

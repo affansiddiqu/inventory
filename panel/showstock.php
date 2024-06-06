@@ -1,6 +1,6 @@
 <?php
 require('config.php');
-require('dashboard.php');
+require('index.php');
 
 if (isset($_GET['productId'])) {
     $productId = $_GET['productId'];

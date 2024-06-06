@@ -1,10 +1,9 @@
 <?php
 require('config.php');
-require('dashboard.php');
+require('index.php');
 
-$fetch = "SELECT * FROM `products` WHERE status = 1";
+$fetch = "SELECT * FROM `svaluation` WHERE status = 1";
 $query = mysqli_query($connect , $fetch);
-
 
 ?>
 
@@ -28,9 +27,9 @@ $query = mysqli_query($connect , $fetch);
 
 <section class="container">
     <div>
-        <header>Products</header>
+        <header>Stock Valuation</header>
         <!-- <button type="button" onclick="location.href='product_form.php'" class="add_knittingcard_button" style="float: right;"><i class="fa fa-plus" aria-hidden="true"></i>Add Product</button> -->
-        <button type="button" onclick="location.href='product_form.php'" class="add_knittingcard_button" style="float: right;"><i class="fa fa-plus" aria-hidden="true"></i>Add Product</button>
+        <button type="button" onclick="location.href='sv_form.php'" class="add_knittingcard_button" style="float: right;"><i class="fa fa-plus" aria-hidden="true"></i>Stock Valuation</button>
     </div>
 
 <br>
@@ -43,8 +42,6 @@ $query = mysqli_query($connect , $fetch);
         <button type="submit" class="btn btn-danger">Import CSV</button>
     </form>
 </div>
-
-        <!-- <button type="button" class="filter_button"><i class="fa fa-filter" aria-hidden="true"></i>Filter</button> -->
     </div>
 </section>
     
@@ -53,20 +50,17 @@ $query = mysqli_query($connect , $fetch);
                 <!-- table -->
                 <div class="row justify-content-right">
                     
-                    <h2>Products Details</h2>
+                    <h2>Stock Adjustment Details</h2>
                 <hr>
-            <table class="table table-warning" id="example">
+            <table class="table table-warning mt-4" id="example">
                 <thead class="bg-warning p-2 text-dark bg-opacity-10" style="opacity: 75%;">
                     <tr>
-                    <th scope="col">Products_Code</th>
-                    <th scope="col">Products_Name</th>
-                    <th scope="col">Unit</th>
-                    <th scope="col">Products_Category</th>
-                    <th scope="col">Sales_Price </th>
-                    <th scope="col">Purchase_Price</th>
-                    <th scope="col">Delete</th>
-                    <th scope="col">Update</th>
-                    <!-- <th scope="col">Products_detail</th> -->
+                    <th scope="col">Sku Code</th>
+                    <th scope="col">Customer</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Reference</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,14 +68,14 @@ $query = mysqli_query($connect , $fetch);
                      ?>
                     <tr>
 
-                    <td><?php echo $row ['Code']?></td>
-                    <td><?php echo $row ['Name']?></td>
-                    <td><?php echo $row ['Measurement']?></td>
-                    <td><?php echo $row ['Category']?></td>
-                    <td><?php echo $row ['Sales_Price']?></td>
-                    <td><?php echo $row ['Purchase_Price']?></td>
-                    <td ><a href="Product_delete.php?Id=<?php echo $row ['Id'];?>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>  
-                    <td ><a href="Product_update.php?Id=<?php echo $row ['Id'];?>" class="btn btn-success"><i class="fa-regular fa-pen-to-square"></i></a></td>  
+                    <td><?php echo $row ['Vcode']?></td>
+                    <td><?php echo $row ['Customer']?></td>
+                    <td><?php echo $row ['Date']?></td>
+                    <td><?php echo $row ['Vreference']?></td>
+                    <td><?php echo $row ['Vquantity']?></td>
+                    <td><?php echo $row ['vamount']?></td>
+                    <!-- <td ><a href="s_delete.php?Id=<?php echo $row ['Id'];?>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>   -->
+                    <!-- <td ><a href="s_update.php?Id=<?php echo $row ['Id'];?>" class="btn btn-success"><i class="fa-regular fa-pen-to-square"></i></a></td>   -->
                 </tr>
                 <?php
                     }

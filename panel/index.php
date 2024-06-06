@@ -28,17 +28,17 @@
     
     <div class="menu">
         <div class="logo">
-            <img src="images/logo.png" alt="Noorani & Co">
+            <img src="../images/logo.png" alt="Noorani & Co">
         </div>
         
         <div class="dropdown">
             <button onclick="toggleDropdown('dropdown2')" class="dropbtn"><i class="fa fa-cogs" aria-hidden="true"> SetUp</i></button>
             <div id="dropdown2" class="dropdown-content">
-                <a href="logout.php"><i class="fa-solid fa-person-military-pointing"></i> Customer</a>
-                <a href="logout.php"><i class="fa-sharp fa-regular fa-shirt"></i> Vendor</a>
+                <a href=""><i class="fa-solid fa-person-military-pointing"></i> Customer</a>
+                <a href=""><i class="fa-sharp fa-regular fa-shirt"></i> Vendor</a>
                 <a href="Product.php"><i class="fa-brands fa-product-hunt"></i> Products</a>
-                <a href="logout.php"><i class="fa-solid fa-child"></i> Employee</a>
-                <a href="logout.php"><i class="fa-regular fa-user"></i> User</a>
+                <a href=""><i class="fa-solid fa-child"></i> Employee</a>
+                <a href=""><i class="fa-regular fa-user"></i> User</a>
             </div>
             <div class="dropdown ms-4">
                 <button onclick="toggleDropdown('dropdown1')" class="dropbtn"><i class="fa fa-bars" aria-hidden="true"></i></button>
@@ -52,7 +52,7 @@
 </div>
 
 <div class="sidenav">
-    <ol><button class="dropdown-btn">Dashboard<i class="fa fa-caret-down"></i>
+    <ol><button class="dropdown-btn dashboard">Dashboard<i class="fa fa-caret-down"></i>
     <ol><button class="dropdown-btn">Knitting<i class="fa fa-caret-down"></i>
 </button>
 <div class="dropdown-container">
@@ -79,9 +79,9 @@
 </ol>
 <ol><button class="dropdown-btn">Inventory<i class="fa fa-caret-down"></i></button>
 <div class="dropdown-container">
-    <li><a href="purchase.php">Inflow</a></li>
+    <li><a href="#">Inflow</a></li>
     <li><a href="stock.php">Stock Adjustment</a></li>
-    <li><a href="#">Stock Valuation</a></li>
+    <li><a href="stockvaluation.php">Stock Valuation</a></li>
 </div>
 </ol>
 <ol><button class="dropdown-btn">HR<i class="fa fa-caret-down"></i></button>
@@ -93,14 +93,12 @@
     </ol>
     <ol><a href="report.php">Reports</a>
     </ol>
-</div>
-
+</div> 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- updated jQuery CDN link -->
 <script>
-    /* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
     var acc = document.getElementsByClassName("dropdown-btn");
     var i;
-    
+
     for (i = 0; i < acc.length; i++) {
         acc[i].addEventListener("click", function() {
             this.classList.toggle("active");
@@ -110,15 +108,48 @@
             } else {
                 panel.style.display = "block";
             }
-  });
-}
-function toggleDropdown(dropdownId) {
-    var dropdown = document.getElementById(dropdownId);
-    dropdown.classList.toggle("show");
-}
+        });
+    }
 
+    function toggleDropdown(dropdownId) {
+        var dropdown = document.getElementById(dropdownId);
+        dropdown.classList.toggle("show");
+    }
+
+    function redirectTo(url) {
+        window.location.href = url;
+    }
+
+    document.addEventListener('click', function(event) {
+        var isClickInsideDropdown = event.target.closest('.dropdown');
+        var dropdowns = document.getElementsByClassName('dropdown-content');
+        for (var i = 0; i < dropdowns.length; i++) {
+            if (!isClickInsideDropdown || !isClickInsideDropdown.contains(dropdowns[i])) {
+                dropdowns[i].classList.remove('show');
+            }
+        }
+
+        var isClickInsideSidenavDropdown = event.target.closest('.sidenav');
+        var sidenavDropdowns = document.getElementsByClassName('dropdown-container');
+        for (var j = 0; j < sidenavDropdowns.length; j++) {
+            if (!isClickInsideSidenavDropdown || !isClickInsideSidenavDropdown.contains(sidenavDropdowns[j].previousElementSibling)) {
+                sidenavDropdowns[j].style.display = 'none';
+            }
+        }
+    });
+
+    // Redirect to index.php when dashboard is clicked
+    $(document).on('click', '.dashboard', function() {
+        redirectTo('index.php');
+    });
 </script>
-
-</body> 
-
+</body>
 </html>
+
+<!-- <div class="column mt-4">
+    <label>Shipping Address</label> <br>
+<input class="form-control text-dark border border-dark input-lg"  type="text">
+
+<label for="inputlg">Comments Here!</label> <br>
+<input class="form-control  text-dark border border-dark input-lg" id="inputlg" type="text">
+</div> -->

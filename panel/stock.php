@@ -1,6 +1,6 @@
 <?php
 require('config.php');
-require('dashboard.php');
+require('index.php');
 
 $fetch = "SELECT * FROM `stock` WHERE status = 1";
 $query = mysqli_query($connect , $fetch);
