@@ -11,11 +11,11 @@ $newCode = 'SD-' . str_pad($maxCode + 1, 5, '0', STR_PAD_LEFT);
 
 if (isset($_POST['submit'])) {
     for ($i = 0; $i < count($_POST['pid']); $i++) {
-        $pid = $_POST['pid'][$i];
+        $pid = $_POST['query'][$i];
         $customer = $_POST['customer'][0];
         $date = $_POST['date'][0];
         $reference = $_POST['reference'][0];
-        $pname = $_POST['query'][$i];
+        $pname = $_POST['pid'][$i];
         $quantity = $_POST['quantity'][$i];
         $cost = $_POST['cost'][$i];
         $amount = $_POST['amount'][$i];
@@ -101,12 +101,12 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 <div class="input-box">
                     <label>Current Date</label><br>
                     <input type="date" name="date[]" class="border border-dark text-dark" required />
-                </div>
-                <div class="input-box">
-                    <label>Reference</label><br>
-                    <input type="text" name="reference[]" class="border border-dark text-dark" required />
-                </div>
-            </div>
+                    </div>
+                    <div class="input-box">
+                        <label>Reference</label><br>
+                        <input type="text" name="reference[]" class="border border-dark text-dark" required />
+                        </div>
+                        </div>
             <br>
             <div class="column">
                 <div class="input-box mt-3">
@@ -115,11 +115,12 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                         <option>Select a product</option>
                     </select>
                 </div>
+                <input type="hidden" name="pid[]" class="pname" required />
                 <div class="input-box">
                     <label for="costInput">Cost</label><br>
                     <input type="number" name="cost[]" id="costInput" required class="costInput text-dark border border-dark" />
-                </div>
-                <div class="input-box">
+                    </div>
+                    <div class="input-box">
                     <label>Stock Quantity</label><br>
                     <input type="number" name="quantity[]" id="quantity" required class="quantityInput text-dark border border-dark" />
                 </div>
@@ -127,9 +128,9 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                     <label>Net Amount</label><br>
                     <input type="number" name="amount[]" id="netAmount" required class="amountInput text-dark border border-dark" />
                 </div>
-                <div class="input-box">
+                <!-- <div class="input-box">
                     <input type="hidden" name="pid[]" required class="pid" />
-                </div>
+                </div> -->
                 <i class="fa-solid fa-arrow-down mt-5" name="addrow" id="addrow"></i>
             </div>
             <div id="next"></div>
@@ -281,6 +282,38 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 $(this).closest('div.column').remove();
             });
         });
+        // Handle product selection
+$(document).on('change', '.product-dropdown', function() {
+    var selectedProductId = $(this).val();
+    var parent = $(this).closest('.column');
+
+    if (selectedProductId) {
+        $.ajax({
+            url: "<?php echo $_SERVER['PHP_SELF']; ?>",
+            method: "post",
+            data: { product_id: selectedProductId },
+            dataType: 'json',
+            success: function(data) {
+                if (data) {
+                    parent.find('.costInput').val(data.Sales_Price);
+                    parent.find('.pid').val(data.Id);
+                    parent.find('.pname').val(data.Name); // Update the product name field
+                } else {
+                    parent.find('.costInput').val('');
+                    parent.find('.pid').val('');
+                    parent.find('.pname').val(''); // Clear the product name field if no product is selected
+                }
+            }
+        });
+    } else {
+        parent.find('.costInput').val('');
+        parent.find('.pid').val('');
+        parent.find('.pname').val(''); // Clear the product name field if no product is selected
+    }
+});
+
     </script>
 </body>
 </html>
+
+<!-- jitni bh row add hojaen number(Code sd-00001) hi rhy or jitni bh quantity hu or amount hu quantity sari add hokr database me insert hu or amount bh jb dobaraha form open hu tw sd-00002 ayi number -->

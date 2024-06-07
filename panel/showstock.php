@@ -54,7 +54,7 @@ if (isset($_GET['productId'])) {
                 <tbody>
                     <?php while ($stock = mysqli_fetch_assoc($stockResult)) { ?>
                         <tr>
-                            <td><?php echo $product['Code']; ?></td>
+                            <td><?php echo $stock['SCode']; ?></td>
                             <td><?php echo $product['Name']; ?></td>
                             <td><?php echo $stock['Type']; ?></td>
                             <td><?php echo $stock['Date']; ?></td>

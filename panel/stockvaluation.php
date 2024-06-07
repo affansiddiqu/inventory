@@ -55,12 +55,14 @@ $query = mysqli_query($connect , $fetch);
             <table class="table table-warning mt-4" id="example">
                 <thead class="bg-warning p-2 text-dark bg-opacity-10" style="opacity: 75%;">
                     <tr>
-                    <th scope="col">Sku Code</th>
+                    <th scope="col">Number</th>
                     <th scope="col">Customer</th>
                     <th scope="col">Date</th>
                     <th scope="col">Reference</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Amount</th>
+                    <th scope="col">Delete</th>
+                    <th scope="col">Update</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,8 +76,8 @@ $query = mysqli_query($connect , $fetch);
                     <td><?php echo $row ['Vreference']?></td>
                     <td><?php echo $row ['Vquantity']?></td>
                     <td><?php echo $row ['vamount']?></td>
-                    <!-- <td ><a href="s_delete.php?Id=<?php echo $row ['Id'];?>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>   -->
-                    <!-- <td ><a href="s_update.php?Id=<?php echo $row ['Id'];?>" class="btn btn-success"><i class="fa-regular fa-pen-to-square"></i></a></td>   -->
+                    <td ><a href="svdelete.php?Id=<?php echo $row ['Id'];?>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>  
+                    <td ><a href="svupdate.php?Id=<?php echo $row ['Id'];?>" class="btn btn-success"><i class="fa-regular fa-pen-to-square"></i></a></td>  
                 </tr>
                 <?php
                     }
