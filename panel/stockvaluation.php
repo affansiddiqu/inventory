@@ -2,7 +2,7 @@
 require('config.php');
 require('index.php');
 
-$fetch = "SELECT * FROM `svaluation` WHERE status = 1";
+$fetch = "SELECT * FROM `svaluation` as s inner join `Customer` as c on s.Cid = c.Id ";
 $query = mysqli_query($connect , $fetch);
 
 ?>
@@ -50,7 +50,7 @@ $query = mysqli_query($connect , $fetch);
                 <!-- table -->
                 <div class="row justify-content-right">
                     
-                    <h2>Stock Adjustment Details</h2>
+                    <h2>Stock Valuation Details</h2>
                 <hr>
             <table class="table table-warning mt-4" id="example">
                 <thead class="bg-warning p-2 text-dark bg-opacity-10" style="opacity: 75%;">

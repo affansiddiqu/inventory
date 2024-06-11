@@ -1,49 +1,17 @@
 <?php
-// Include database connection
-require('config.php'); // Assuming this file contains database connection code
+require('config.php');
+require('index.php');
 
 $stock_Id = $_GET['Id']; 
 
-$query = "select * from `svaluation` where Id = '{$stock_Id}'";
+$query = "SELECT * FROM `svaluation` WHERE Id = '{$stock_Id}'";
+$results = mysqli_query($connect, $query);
 
-$results = mysqli_query($connect , $query);
-if(!$results){
-    die("query fail");
-}
 
 if (mysqli_num_rows($results) > 0 ) {
     while($row = mysqli_fetch_assoc($results)) {
-     
-        // if (isset($_POST["query"])) {
-        //     $output = array();
-        //     $query = "SELECT * FROM products WHERE Name LIKE '%" . $_POST["query"] . "%'";
-        //     $res = mysqli_query($connect, $query);
-        //     if (mysqli_num_rows($res) > 0) {
-        //         while ($row = mysqli_fetch_assoc($res)) {
-        //             $output[] = $row;
-        //         }
-        //         echo json_encode($output);
-        //     } else {
-        //         echo json_encode([]);
-        //     }
-        //     exit;
-        // }
-        // if (isset($_POST["product_id"])) {
-        //     $product_id = $_POST["product_id"];
-        //     $query = "SELECT * FROM products WHERE Id = $product_id";
-        //     $res = mysqli_query($connect, $query);
-        //     if (mysqli_num_rows($res) > 0) {
-        //         $product = mysqli_fetch_assoc($res);
-        //         echo json_encode($product);
-        //     } else {
-        //         echo json_encode([]);
-        //     }
-        //     exit;
-        // }
-                        
-        require('index.php'); // Assuming this file contains database connection code
-        ?>
 
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -125,7 +93,8 @@ if (mysqli_num_rows($results) > 0 ) {
         </form>
         <?php
     }
-}
+    }
+
     ?>
     </section>
 
@@ -195,4 +164,3 @@ if (mysqli_num_rows($results) > 0 ) {
         
     </body>
     </html>
-    <!-- product name me product name pora nh arha  -->

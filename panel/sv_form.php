@@ -1,7 +1,7 @@
 <?php
 // Include database connection
 require('config.php'); // Assuming this file contains database connection code
-
+ 
 // Fetch the maximum SKU code
 $query = "SELECT MAX(SUBSTRING(`VCode`, 4)) AS max_code FROM `svaluation`";
 $result = mysqli_query($connect, $query);
@@ -10,33 +10,30 @@ $maxCode = $row['max_code'];
 $newCode = 'SD-' . str_pad($maxCode + 1, 5, '0', STR_PAD_LEFT);
 
 if (isset($_POST['submit'])) {
-    for ($i = 0; $i < count($_POST['pid']); $i++) {
-        $pid = $_POST['query'][$i];
-        $customer = $_POST['customer'][0];
-        $date = $_POST['date'][0];
-        $reference = $_POST['reference'][0];
-        $pname = $_POST['pid'][$i];
-        $quantity = $_POST['quantity'][$i];
-        $cost = $_POST['cost'][$i];
-        $amount = $_POST['amount'][$i];
-        $address = $_POST['address'][0];
-        $comment = $_POST['comment'][0];
+    // Combine product names into a single string
+    $productNames = implode(", ", $_POST['query']);
 
-        // Validate input values
-        if (($pid) && ($customer) && ($date) && ($reference) && ($pname) && ($quantity) && ($cost) && ($amount)) {
-            $insertProduct = "INSERT INTO `svaluation` (`P_id`, `Customer`, `Date`, `Vreference`, `Pname`, `Vcost`, `Vquantity`, `vamount`, `Address`, `Comment`) VALUES ('$pid', '$customer', '$date', '$reference', '$pname', '$cost', '$quantity', '$amount', '$address', '$comment')";
-            $resultProduct = mysqli_query($connect, $insertProduct);
-            if ($resultProduct) {
-                echo "<script>alert('Stock valuation added successfully');</script>";
-                header("location:stockvaluation.php");
-            } else {
-                echo "<script>alert('Error: " . mysqli_error($connect) . "');</script>";
-            }
-        } else {
-            echo "<script>alert('All fields are required');</script>";
-        }
+    // Assuming other variables are from the first row
+    $pid = $_POST['pid'][0];
+    $date = $_POST['date'][0];
+    $reference = $_POST['reference'][0];
+    $Cid = $_POST['cid'][0];
+    $quantity = $_POST['tquantity'][0];
+    $amount = $_POST['AmountInput'][0];
+    $address = $_POST['address'][0];
+    $comment = $_POST['comment'][0];
+    
+    // Validate input values and insert into the database
+    $insertProduct = "INSERT INTO `svaluation` (`P_id`, `Date`, `Vreference`, `Cid`, `pname`, `Vquantity`, `vamount`, `Address`, `Comment`) VALUES ('$pid', '$date', '$reference', '$Cid', '$productNames', '$quantity', '$amount', '$address', '$comment')";
+    $resultProduct = mysqli_query($connect, $insertProduct);
+    if ($resultProduct) {
+        echo "<script>alert('Stock valuation added successfully');</script>";
+        header("location:stockvaluation.php");
+    } else {
+        echo "<script>alert('Error: " . mysqli_error($connect) . "');</script>";
     }
 }
+
 
 if (isset($_POST["query"])) {
     $output = array();
@@ -90,10 +87,25 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
         <!-- Form -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form" id="stockForm" method="post">
             <div class="column">
-                <div class="input-box">
-                    <label for="text">Customer</label><br>
-                    <input type="text" name="customer[]" class="border border-dark text-dark" required />
-                </div>
+            <div class="input-box mt-4">
+                <?php
+        $product = "SELECT * from `customer`  where`status` ='1'";
+        $result1 = mysqli_query($connect, $product);
+        if(mysqli_num_rows($result1) > 0) {
+        ?>
+        <select class="form-select border-dark" style="border-width: 2px;" name="cid" aria-label="Default select example" id="sname">
+            <option selected>Select Customer</option>
+            <?php
+            while($row = mysqli_fetch_assoc($result1)){
+            ?>
+            <option value="<?php echo $row['Id']?>" ><?php echo  $row['Customer']?> </option>
+            <?php
+            }
+            }
+            ?>
+        </select>
+    </div>
+     
                 <div class="input-box">
                     <label>Number</label><br>
                     <input readonly name="number" class="border border-dark text-dark" value="<?php echo $newCode; ?>" required />
@@ -111,7 +123,7 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
             <div class="column">
                 <div class="input-box mt-3">
                     <label>Product Name</label><br>
-                    <select name="query[]" class="product-dropdown border border-dark text-dark" required>
+                    <select name="query[]" class="product-dropdown border border-dark" required>
                         <option>Select a product</option>
                     </select>
                 </div>
@@ -124,6 +136,7 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                     <label>Stock Quantity</label><br>
                     <input type="number" name="quantity[]" id="quantity" required class="quantityInput text-dark border border-dark" />
                 </div>
+             
                 <div class="input-box">
                     <label>Net Amount</label><br>
                     <input type="number" name="amount[]" id="netAmount" required class="amountInput text-dark border border-dark" />
@@ -134,6 +147,17 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 <i class="fa-solid fa-arrow-down mt-5" name="addrow" id="addrow"></i>
             </div>
             <div id="next"></div>
+
+            <div class="column">
+                <div class="input-box">
+                    <label>Total Quantity</label><br>
+                <input type="text" name="tquantity[]" id="totalQuantity" class="text-dark border border-dark" readonly />
+            </div>        
+        <div class="input-box">
+            <label>Total Amount</label><br>
+        <input type="text" name="AmountInput[]" id="AmountInput" class="text-dark border border-dark" readonly />
+    </div>
+</div>
             <div class="column">
                 <div class="input-box">
                     <label for="text">Shipping Address</label><br>
@@ -148,6 +172,32 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
         </form>
     </section>
     <script>
+                $(document).ready(function() {
+            // Function to calculate and update total quantity
+            function updateTotalQuantity() {
+                var totalQuantity = 0;
+                $('.quantityInput').each(function() {
+                    var quantity = parseInt($(this).val());
+                    if (!isNaN(quantity)) {
+                        totalQuantity += quantity;
+                    }
+                });
+                $('#totalQuantity').val(totalQuantity);
+            }
+
+            // Event handler for quantity input change
+            $(document).on('input', '.quantityInput', function() {
+                updateTotalQuantity();
+            });
+
+            // Add new row
+            $('#addrow').click(function() {
+                // Your code to add a new row
+                // Remember to call updateTotalQuantity() after adding the row
+            });
+        });
+            
+
         $(document).ready(function() {
             // Initialize Select2
             $('.product-dropdown').select2({
@@ -208,14 +258,14 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 var row = $(this).closest('.column');
                 var quantity = row.find('.quantityInput').val();
                 var cost = row.find('.costInput').val();
-                var amount = (quantity * cost).toFixed(2);
+                var amount = (quantity * cost);
                 row.find('.amountInput').val(amount);
             });
 
             // Add new row
             $('#addrow').click(function() {
                 var newrow = `<div class="column">
-                    <div class="input-box">
+                    <div class="input-box mt-3">
                         <select name="query[]" class="product-dropdown border border-dark text-dark" required>
                             <option value="">Select a product</option>
                         </select>
@@ -230,7 +280,7 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                         <input type="number" name="amount[]" class="amountInput text-dark border border-dark" required />
                     </div>
                     <input type="hidden" name="pid[]" class="pid" required />
-                    <i class="fa-solid fa-xmark btnremove"></i>
+                    <i class="fa-solid fa-xmark btnremove mt-4"></i>
                 </div>`;
 
                 // Get adjustment type and date from the first row
@@ -311,9 +361,77 @@ $(document).on('change', '.product-dropdown', function() {
         parent.find('.pname').val(''); // Clear the product name field if no product is selected
     }
 });
+// Handle product selection
+$(document).on('change', '.product-dropdown', function() {
+    var selectedProductId = $(this).val();
+    var parent = $(this).closest('.column');
+
+    if (selectedProductId) {
+        $.ajax({
+            url: "<?php echo $_SERVER['PHP_SELF']; ?>",
+            method: "post",
+            data: { product_id: selectedProductId },
+            dataType: 'json',
+            success: function(data) {
+                if (data) {
+                    parent.find('.costInput').val(data.Sales_Price);
+                    parent.find('.pid').val(data.Id);
+                    parent.find('.pname').val(data.Name); // Update the hidden pname field
+                    parent.find('.pname_display').val(data.Name); // Update the pname_display field
+                } else {
+                    parent.find('.costInput').val('');
+                    parent.find('.pid').val('');
+                    parent.find('.pname').val(''); // Clear the hidden pname field if no product is selected
+                    parent.find('.pname_display').val(''); // Clear the pname_display field if no product is selected
+                }
+            }
+        });
+    } else {
+        parent.find('.costInput').val('');
+        parent.find('.pid').val('');
+        parent.find('.pname').val(''); // Clear the hidden pname field if no product is selected
+        parent.find('.pname_display').val(''); // Clear the pname_display field if no product is selected
+    }
+});
+$(document).ready(function() {
+    // Function to calculate and update total amount
+    function updateTotalAmount() {
+        var totalAmount = 0;
+        $('.amountInput').each(function() {
+            var amount = parseFloat($(this).val());
+            if (!isNaN(amount)) {
+                totalAmount += amount;
+            }
+        });
+        $('#AmountInput').val(totalAmount); 
+    }
+
+    // Event handler for amount input change
+    $(document).on('input', '.amountInput', function() {
+        updateTotalAmount();
+    });
+
+    // Event handler for quantity or cost input change
+    $(document).on('input', '.quantityInput, .costInput', function() {
+        var row = $(this).closest('.column');
+        var quantity = parseFloat(row.find('.quantityInput').val());
+        var cost = parseFloat(row.find('.costInput').val());
+        if (!isNaN(quantity) && !isNaN(cost)) {
+            var amount = quantity * cost;
+            row.find('.amountInput').val(amount);
+            updateTotalAmount();
+        }
+    });
+
+    // Add new row
+    $('#addrow').click(function() {
+        // Your code to add a new row
+        // Remember to call updateTotalAmount() after adding the row
+    });
+
+    // Other JavaScript code
+});
 
     </script>
 </body>
 </html>
-
-<!-- jitni bh row add hojaen number(Code sd-00001) hi rhy or jitni bh quantity hu or amount hu quantity sari add hokr database me insert hu or amount bh jb dobaraha form open hu tw sd-00002 ayi number -->

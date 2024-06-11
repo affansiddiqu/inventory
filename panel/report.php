@@ -4,9 +4,6 @@ require('index.php');
 
 // Fetch product data with total quantity, amount, and average amount where quantity is greater than zero or equal to zero but not empty
 
-$fetch = "SELECT * FROM `stock` as s inner join products as p on s.P_id=p.Id";
-$query1 = mysqli_query($connect, $fetch);
-
 $query = "SELECT p.*, 
                  SUM(CASE WHEN s.Type = 'Lost of Theft' THEN -s.Quantity ELSE s.Quantity END) AS TotalQuantity,
                  SUM(CASE WHEN s.Type = 'Lost of Theft' THEN -s.Amount ELSE s.Amount END) AS TotalAmount,
