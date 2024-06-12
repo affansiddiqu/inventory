@@ -1,7 +1,7 @@
 <?php
 // Include database connection
 require('config.php'); // Assuming this file contains database connection code
- 
+
 // Fetch the maximum SKU code
 $query = "SELECT MAX(SUBSTRING(`VCode`, 4)) AS max_code FROM `svaluation`";
 $result = mysqli_query($connect, $query);
@@ -9,29 +9,40 @@ $row = mysqli_fetch_assoc($result);
 $maxCode = $row['max_code'];
 $newCode = 'SD-' . str_pad($maxCode + 1, 5, '0', STR_PAD_LEFT);
 
-if (isset($_POST['submit'])) {
-    // Combine product names into a single string
-    $productNames = implode(", ", $_POST['query']);
 
-    // Assuming other variables are from the first row
-    $pid = $_POST['pid'][0];
-    $date = $_POST['date'][0];
-    $reference = $_POST['reference'][0];
-    $Cid = $_POST['cid'][0];
-    $quantity = $_POST['tquantity'][0];
-    $amount = $_POST['AmountInput'][0];
-    $address = $_POST['address'][0];
-    $comment = $_POST['comment'][0];
-    
-    // Validate input values and insert into the database
-    $insertProduct = "INSERT INTO `svaluation` (`P_id`, `Date`, `Vreference`, `Cid`, `pname`, `Vquantity`, `vamount`, `Address`, `Comment`) VALUES ('$pid', '$date', '$reference', '$Cid', '$productNames', '$quantity', '$amount', '$address', '$comment')";
-    $resultProduct = mysqli_query($connect, $insertProduct);
-    if ($resultProduct) {
-        echo "<script>alert('Stock valuation added successfully');</script>";
-        header("location:stockvaluation.php");
-    } else {
-        echo "<script>alert('Error: " . mysqli_error($connect) . "');</script>";
+if (isset($_POST['submit'])) {
+    // Gather form data
+    $customerId = $_POST['cid'];
+    $date = $_POST['date'];
+    $reference = $_POST['reference'];
+    $address = $_POST['address'];
+    $comment = $_POST['comment'];
+    $cost = $_POST['cost'];
+    $quantity = $_POST['tquantity'];
+    $amount = $_POST['AmountInput'];
+
+    // Insert data into the `svaluation` table
+    $query = "INSERT INTO `svaluation` (`VCode`, `Cid`, `Date`, `Vreference`, `Vquantity`, `vamount`, `Address`, `Comment`) VALUES ('$newCode', '$customerId','$date', '$reference', '$quantity','$amount', '$address', '$comment')";
+    mysqli_query($connect, $query);
+
+    // Get the ID of the inserted row in `svaluation` table
+    $sid = mysqli_insert_id($connect);
+
+    // Insert data into the `pro` table
+    for ($i = 0; $i < count($_POST['query']); $i++) {
+        $name = $_POST['pid'][$i];
+        $price = $_POST['cost'][$i];
+        $quantitys = $_POST['quantity'][$i];
+        $amounts = $_POST['amount'][$i];
+
+        // Use the same $sid for each product being added
+        $query = "INSERT INTO `pro` (`sid`, `cod`, `Name`, `price`, `quantity`, `amount`) VALUES ('$sid', '$newCode', '$name', '$price', '$quantitys', '$amounts')";
+        mysqli_query($connect, $query); // Execute the query to insert data into `pro` table
     }
+
+    // Redirect to svaluation.php after data insertion
+    header("Location: stockvaluation.php");
+    exit();
 }
 
 
@@ -65,6 +76,7 @@ if (isset($_POST["product_id"])) {
 
 require('index.php'); // Assuming this file contains necessary dashboard functions
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,13 +99,13 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
         <!-- Form -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form" id="stockForm" method="post">
             <div class="column">
-            <div class="input-box mt-4">
-                <?php
-        $product = "SELECT * from `customer`  where`status` ='1'";
-        $result1 = mysqli_query($connect, $product);
-        if(mysqli_num_rows($result1) > 0) {
-        ?>
-        <select class="form-select border-dark" style="border-width: 2px;" name="cid" aria-label="Default select example" id="sname">
+                <div class="input-box mt-4">
+                    <?php 
+                    $product = "SELECT * from `customer`  where`status` ='1'";
+                    $result1 = mysqli_query($connect, $product);
+                    if(mysqli_num_rows($result1) > 0) {
+                        ?>
+                        <select class="form-select border-dark" name="cid" aria-label="Default select example" id="sname">
             <option selected>Select Customer</option>
             <?php
             while($row = mysqli_fetch_assoc($result1)){
@@ -112,11 +124,11 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 </div>
                 <div class="input-box">
                     <label>Current Date</label><br>
-                    <input type="date" name="date[]" class="border border-dark text-dark" required />
+                    <input type="date" name="date" class="border border-dark text-dark" required />
                     </div>
                     <div class="input-box">
                         <label>Reference</label><br>
-                        <input type="text" name="reference[]" class="border border-dark text-dark" required />
+                        <input type="text" name="reference" class="border border-dark text-dark" required />
                         </div>
                         </div>
             <br>
@@ -141,31 +153,28 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                     <label>Net Amount</label><br>
                     <input type="number" name="amount[]" id="netAmount" required class="amountInput text-dark border border-dark" />
                 </div>
-                <!-- <div class="input-box">
-                    <input type="hidden" name="pid[]" required class="pid" />
-                </div> -->
                 <i class="fa-solid fa-arrow-down mt-5" name="addrow" id="addrow"></i>
             </div>
             <div id="next"></div>
 
-            <div class="column">
+            <div class="column mt-2">
                 <div class="input-box">
                     <label>Total Quantity</label><br>
-                <input type="text" name="tquantity[]" id="totalQuantity" class="text-dark border border-dark" readonly />
+                <input type="text" name="tquantity" id="totalQuantity" class="text-dark border border-dark" readonly />
             </div>        
         <div class="input-box">
             <label>Total Amount</label><br>
-        <input type="text" name="AmountInput[]" id="AmountInput" class="text-dark border border-dark" readonly />
+        <input type="text" name="AmountInput" id="AmountInput" class="text-dark border border-dark" readonly />
     </div>
 </div>
-            <div class="column">
+            <div class="column mt-2">
                 <div class="input-box">
                     <label for="text">Shipping Address</label><br>
-                    <textarea class="form-control border border-dark text-dark" name="address[]" rows="4"></textarea>
+                    <textarea class="form-control border border-dark text-dark" name="address" rows="4"></textarea>
                 </div>
                 <div class="input-box">
                     <label>Comments</label><br>
-                    <textarea class="form-control border border-dark text-dark" name="comment[]" rows="4"></textarea>
+                    <textarea class="form-control border border-dark text-dark" name="comment" rows="4"></textarea>
                 </div>
             </div>
             <input type="submit" name="submit" value="Submit" class="mt-4 btn btn-danger">
@@ -267,7 +276,7 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 var newrow = `<div class="column">
                     <div class="input-box mt-3">
                         <select name="query[]" class="product-dropdown border border-dark text-dark" required>
-                            <option value="">Select a product</option>
+                            <option>Select a product</option>
                         </select>
                     </div>
                     <div class="input-box">
@@ -284,19 +293,6 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 </div>`;
 
                 // Get adjustment type and date from the first row
-                var adjustmentType = $('input[name="customer[]"]:first').val();
-                var adjustmentDate = $('input[name="date[]"]:first').val();
-                var adjustmentref = $('input[name="reference[]"]:first').val();
-                var adjustmentadd = $('textarea[name="address[]"]:first').val();
-                var adjustmentcomm = $('textarea[name="comment[]"]:first').val();
-
-                // Add adjustment type and date to the new row
-                newrow += `
-                    <input type="hidden" name="customer[]" value="${adjustmentType}">
-                    <input type="hidden" name="date[]" value="${adjustmentDate}">
-                    <input type="hidden" name="reference[]" value="${adjustmentref}">
-                    <input type="hidden" name="address[]" value="${adjustmentadd}">
-                    <input type="hidden" name="comment[]" value="${adjustmentcomm}">`;
 
                 $('#next').append(newrow);
 

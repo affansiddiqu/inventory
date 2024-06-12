@@ -1,48 +1,48 @@
 <?php
-require('config.php');
+// Include database connection
+require('config.php'); // Assuming this file contains database connection code
 
-// Function to fetch data of a specific row by ID
-function getRowData($connect, $id) {
-    $query = "SELECT * FROM `svaluation` WHERE `ID` = '$id'";
-    $result = mysqli_query($connect, $query);
-    return mysqli_fetch_assoc($result);
-}
-
-// Check if form is submitted for update
-if (isset($_POST['submit'])) {
-    $id = $_POST['id']; // Get the ID of the row to update
-
-    // Get the updated values from the form
-    $pid = $_POST['pid'];
+if(isset($_POST['update'])) {
+    // Gather form data
+    $id = $_POST['Id'];
+    $customerId = $_POST['cid'];
     $date = $_POST['date'];
     $reference = $_POST['reference'];
-    $Cid = $_POST['cid'];
-    $productNames = implode(", ", $_POST['query']);
-    $quantity = $_POST['quantity'];
-    $amount = $_POST['amount'];
     $address = $_POST['address'];
     $comment = $_POST['comment'];
+    $quantity = $_POST['tquantity'];
+    $amount = $_POST['AmountInput'];
 
-    // Update the row in the database
-    $updateQuery = "UPDATE `svaluation` SET `P_id` = '$pid', `Date` = '$date', `Vreference` = '$reference', `Cid` = '$Cid', `pname` = '$productNames', `Vquantity` = '$quantity', `vamount` = '$amount', `Address` = '$address', `Comment` = '$comment' WHERE `ID` = '$id'";
-    $result = mysqli_query($connect, $updateQuery);
-    if ($result) {
-        echo "<script>alert('Row updated successfully');</script>";
-        header("location:stockvaluation.php");
-    } else {
-        echo "<script>alert('Error: " . mysqli_error($connect) . "');</script>";
+    // Update data in the svaluation table
+    $svaluation_query = "UPDATE `svaluation` SET `Cid`='$customerId', `Date`='$date', `Vreference`='$reference', `Address`='$address', `Comment`='$comment', `Vquantity`='$quantity', `vamount`='$amount' WHERE `Id`='$id'";
+    $svaluation_result = mysqli_query($connect, $svaluation_query);
+
+    // Check if update was successful
+    if(!$svaluation_result) {
+        echo "Error updating svaluation data: " . mysqli_error($connect);
+        exit(); // Exit if there is an error
     }
-}
 
-// Check if ID is provided for updating
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    // Fetch data of the selected row
-    $rowData = getRowData($connect, $id);
-} else {
-    // Handle error if ID is not provided
-    echo "<script>alert('Row ID not provided');</script>";
-}
+    // Update data in the pro table
+    for($i = 0; $i < count($_POST['productName']); $i++) {
+        $productName = $_POST['productName'][$i];
+        $price = $_POST['price'][$i];
+        $pro_quantity = $_POST['pro_quantity'][$i];
+        $pro_amount = $_POST['pro_amount'][$i];
 
-// Rest of your HTML and form code goes here
+        // Update data in the pro table based on product ID
+        $pro_update_query = "UPDATE `pro` SET `Name`='$productName', `price`='$price', `quantity`='$pro_quantity', `amount`='$pro_amount' WHERE `sid`='$id'";
+        $pro_update_result = mysqli_query($connect, $pro_update_query);
+
+        // Check if update was successful
+        if(!$pro_update_result) {
+            echo "Error updating pro data: " . mysqli_error($connect);
+            exit(); // Exit if there is an error
+        }
+    }
+    header("Location: stockvaluation.php");
+
+
+    echo "Data updated successfully!";
+}
 ?>
