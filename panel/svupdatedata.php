@@ -25,13 +25,14 @@ if(isset($_POST['update'])) {
 
     // Update data in the pro table
     for($i = 0; $i < count($_POST['productName']); $i++) {
+        $pid = $_POST['pid'][$i]; // Unique product ID for each product entry
         $productName = $_POST['productName'][$i];
         $price = $_POST['price'][$i];
         $pro_quantity = $_POST['pro_quantity'][$i];
         $pro_amount = $_POST['pro_amount'][$i];
 
-        // Update data in the pro table based on product ID
-        $pro_update_query = "UPDATE `pro` SET `Name`='$productName', `price`='$price', `quantity`='$pro_quantity', `amount`='$pro_amount' WHERE `sid`='$id'";
+        // Update data in the pro table based on unique product ID and sid
+        $pro_update_query = "UPDATE `pro` SET `Name`='$productName', `price`='$price', `quantity`='$pro_quantity', `amount`='$pro_amount' WHERE `Id`='$pid' AND `sid`='$id'";
         $pro_update_result = mysqli_query($connect, $pro_update_query);
 
         // Check if update was successful
@@ -40,8 +41,9 @@ if(isset($_POST['update'])) {
             exit(); // Exit if there is an error
         }
     }
-    header("Location: stockvaluation.php");
 
+    // Redirect to stock valuation page after successful update
+    header("Location: stockvaluation.php");
 
     echo "Data updated successfully!";
 }

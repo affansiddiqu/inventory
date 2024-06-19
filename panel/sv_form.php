@@ -1,3 +1,4 @@
+
 <?php
 // Include database connection
 require('config.php'); // Assuming this file contains database connection code
@@ -8,7 +9,6 @@ $result = mysqli_query($connect, $query);
 $row = mysqli_fetch_assoc($result);
 $maxCode = $row['max_code'];
 $newCode = 'SD-' . str_pad($maxCode + 1, 5, '0', STR_PAD_LEFT);
-
 
 if (isset($_POST['submit'])) {
     // Gather form data
@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
     $sid = mysqli_insert_id($connect);
 
     // Insert data into the `pro` table
-    for ($i = 0; $i < count($_POST['query']); $i++) {
+    for ($i = 0; $i < count($_POST['pid']); $i++) {
         $name = $_POST['pid'][$i];
         $price = $_POST['cost'][$i];
         $quantitys = $_POST['quantity'][$i];
@@ -40,11 +40,10 @@ if (isset($_POST['submit'])) {
         mysqli_query($connect, $query); // Execute the query to insert data into `pro` table
     }
 
-    // Redirect to svaluation.php after data insertion
+    // Redirect to stockvaluation.php after data insertion
     header("Location: stockvaluation.php");
     exit();
 }
-
 
 if (isset($_POST["query"])) {
     $output = array();
@@ -106,18 +105,19 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                     if(mysqli_num_rows($result1) > 0) {
                         ?>
                         <select class="form-select border-dark" name="cid" aria-label="Default select example" id="sname">
-            <option selected>Select Customer</option>
-            <?php
-            while($row = mysqli_fetch_assoc($result1)){
-            ?>
-            <option value="<?php echo $row['Id']?>" ><?php echo  $row['Customer']?> </option>
-            <?php
-            }
-            }
-            ?>
-        </select>
-    </div>
-     
+                            <option selected>Select Customer</option>
+                            <?php
+                            while($row = mysqli_fetch_assoc($result1)){
+                            ?>
+                            <option value="<?php echo $row['cusid']?>" ><?php echo  $row['Customer']?> </option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                        <?php
+                    }
+                    ?>
+                </div>
                 <div class="input-box">
                     <label>Number</label><br>
                     <input readonly name="number" class="border border-dark text-dark" value="<?php echo $newCode; ?>" required />
@@ -125,12 +125,12 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 <div class="input-box">
                     <label>Current Date</label><br>
                     <input type="date" name="date" class="border border-dark text-dark" required />
-                    </div>
-                    <div class="input-box">
-                        <label>Reference</label><br>
-                        <input type="text" name="reference" class="border border-dark text-dark" required />
-                        </div>
-                        </div>
+                </div>
+                <div class="input-box">
+                    <label>Reference</label><br>
+                    <input type="text" name="reference" class="border border-dark text-dark" required />
+                </div>
+            </div>
             <br>
             <div class="column">
                 <div class="input-box mt-3">
@@ -143,12 +143,11 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 <div class="input-box">
                     <label for="costInput">Cost</label><br>
                     <input type="number" name="cost[]" id="costInput" required class="costInput text-dark border border-dark" />
-                    </div>
-                    <div class="input-box">
+                </div>
+                <div class="input-box">
                     <label>Stock Quantity</label><br>
                     <input type="number" name="quantity[]" id="quantity" required class="quantityInput text-dark border border-dark" />
                 </div>
-             
                 <div class="input-box">
                     <label>Net Amount</label><br>
                     <input type="number" name="amount[]" id="netAmount" required class="amountInput text-dark border border-dark" />
@@ -160,13 +159,13 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
             <div class="column mt-2">
                 <div class="input-box">
                     <label>Total Quantity</label><br>
-                <input type="text" name="tquantity" id="totalQuantity" class="text-dark border border-dark" readonly />
-            </div>        
-        <div class="input-box">
-            <label>Total Amount</label><br>
-        <input type="text" name="AmountInput" id="AmountInput" class="text-dark border border-dark" readonly />
-    </div>
-</div>
+                    <input type="text" name="tquantity" id="totalQuantity" class="text-dark border border-dark" readonly />
+                </div>        
+                <div class="input-box">
+                    <label>Total Amount</label><br>
+                    <input type="text" name="AmountInput" id="AmountInput" class="text-dark border border-dark" readonly />
+                </div>
+            </div>
             <div class="column mt-2">
                 <div class="input-box">
                     <label for="text">Shipping Address</label><br>
@@ -177,56 +176,33 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                     <textarea class="form-control border border-dark text-dark" name="comment" rows="4"></textarea>
                 </div>
             </div>
-            <input type="submit" name="submit" value="Submit" class="mt-4 btn btn-danger">
+            <input type="submit" class="btn btn-danger mt-3" name="submit" />
         </form>
     </section>
+
     <script>
-                $(document).ready(function() {
-            // Function to calculate and update total quantity
-            function updateTotalQuantity() {
-                var totalQuantity = 0;
-                $('.quantityInput').each(function() {
-                    var quantity = parseInt($(this).val());
-                    if (!isNaN(quantity)) {
-                        totalQuantity += quantity;
-                    }
-                });
-                $('#totalQuantity').val(totalQuantity);
-            }
+        $(document).ready(function () {
+            let productData = [];
 
-            // Event handler for quantity input change
-            $(document).on('input', '.quantityInput', function() {
-                updateTotalQuantity();
-            });
-
-            // Add new row
-            $('#addrow').click(function() {
-                // Your code to add a new row
-                // Remember to call updateTotalQuantity() after adding the row
-            });
-        });
-            
-
-        $(document).ready(function() {
-            // Initialize Select2
-            $('.product-dropdown').select2({
-                placeholder: "Select a product",
+            $(".product-dropdown").select2({
                 ajax: {
-                    url: "<?php echo $_SERVER['PHP_SELF']; ?>",
+                    url: "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>",
                     type: "POST",
                     dataType: "json",
                     delay: 250,
-                    data: function(params) {
+                    data: function (params) {
                         return {
-                            query: params.term // search term
+                            query: params.term
                         };
                     },
-                    processResults: function(data) {
+                    processResults: function (data) {
+                        productData = data;
                         return {
-                            results: $.map(data, function(item) {
+                            results: $.map(data, function (item) {
                                 return {
                                     id: item.Id,
-                                    text: item.Name
+                                    text: item.Name,
+                                    price: item.Price
                                 };
                             })
                         };
@@ -235,6 +211,25 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 }
             });
 
+            $(document).on('change', '.product-dropdown', function () {
+                let productId = $(this).val();
+                let product = productData.find(item => item.Id == productId);
+
+                let row = $(this).closest('.column');
+                row.find('.pname').val(product.Name);
+                row.find('.costInput').val(product.Price);
+                row.find('.quantityInput').val('');
+                row.find('.amountInput').val('');
+                updateTotals();
+            });
+            $(document).on('input', '.quantityInput, .costInput', function() {
+                var row = $(this).closest('.column');
+                var quantity = row.find('.quantityInput').val();
+                var cost = row.find('.costInput').val();
+                var amount = (quantity * cost);
+                row.find('.amountInput').val(amount);
+            });
+            
             // Handle product selection
             $(document).on('change', '.product-dropdown', function() {
                 var selectedProductId = $(this).val();
@@ -262,59 +257,70 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                 }
             });
 
-            // Calculate amount on quantity or cost input
-            $(document).on('input', '.quantityInput, .costInput', function() {
-                var row = $(this).closest('.column');
-                var quantity = row.find('.quantityInput').val();
-                var cost = row.find('.costInput').val();
-                var amount = (quantity * cost);
-                row.find('.amountInput').val(amount);
+            $(document).on('input', '.quantityInput, .costInput', function () {
+                let row = $(this).closest('.column');
+                let cost = parseFloat(row.find('.costInput').val());
+                let quantity = parseFloat(row.find('.quantityInput').val());
+                let amount = cost * quantity;
+                row.find('.amountInput').val(amount.toFixed(2));
+                updateTotals();
             });
 
-            // Add new row
-            $('#addrow').click(function() {
-                var newrow = `<div class="column">
+            function updateTotals() {
+                let totalQuantity = 0;
+                let totalAmount = 0;
+                $('.quantityInput').each(function () {
+                    totalQuantity += parseFloat($(this).val()) || 0;
+                });
+                $('.amountInput').each(function () {
+                    totalAmount += parseFloat($(this).val()) || 0;
+                });
+                $('#totalQuantity').val(totalQuantity.toFixed(2));
+                $('#AmountInput').val(totalAmount.toFixed(2));
+            }
+
+            $("#addrow").click(function () {
+                var newRow = `<div class="column">
                     <div class="input-box mt-3">
-                        <select name="query[]" class="product-dropdown border border-dark text-dark" required>
+                        <label>Product Name</label><br>
+                        <select name="query[]" class="product-dropdown border border-dark" required>
                             <option>Select a product</option>
                         </select>
                     </div>
+                    <input type="hidden" name="pid[]" class="pname" required />
                     <div class="input-box">
-                        <input type="number" name="cost[]" class="costInput text-dark border border-dark" required />
+                        <label for="costInput">Cost</label><br>
+                        <input type="number" name="cost[]" id="costInput" required class="costInput text-dark border border-dark" />
                     </div>
                     <div class="input-box">
-                        <input type="number" name="quantity[]" class="quantityInput text-dark border border-dark" required />
+                        <label>Stock Quantity</label><br>
+                        <input type="number" name="quantity[]" id="quantity" required class="quantityInput text-dark border border-dark" />
                     </div>
                     <div class="input-box">
-                        <input type="number" name="amount[]" class="amountInput text-dark border border-dark" required />
+                        <label>Net Amount</label><br>
+                        <input type="number" name="amount[]" id="netAmount" required class="amountInput text-dark border border-dark" />
                     </div>
-                    <input type="hidden" name="pid[]" class="pid" required />
-                    <i class="fa-solid fa-xmark btnremove mt-4"></i>
                 </div>`;
-
-                // Get adjustment type and date from the first row
-
-                $('#next').append(newrow);
-
-                // Initialize Select2 on the new dropdown
-                $('#next').find('.product-dropdown:last').select2({
-                    placeholder: "Select a product",
+                $("#next").append(newRow);
+                $(".product-dropdown").select2({
                     ajax: {
-                        url: "<?php echo $_SERVER['PHP_SELF']; ?>",
+                        url: "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>",
                         type: "POST",
                         dataType: "json",
                         delay: 250,
-                        data: function(params) {
+                        data: function (params) {
                             return {
-                                query: params.term // search term
+                                query: params.term
                             };
                         },
-                        processResults: function(data) {
+                        processResults: function (data) {
+                            productData = data;
                             return {
-                                results: $.map(data, function(item) {
+                                results: $.map(data, function (item) {
                                     return {
                                         id: item.Id,
-                                        text: item.Name
+                                        text: item.Name,
+                                        price: item.Price
                                     };
                                 })
                             };
@@ -323,111 +329,7 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
                     }
                 });
             });
-
-            $('body').on('click', '.btnremove', function() {
-                $(this).closest('div.column').remove();
-            });
         });
-        // Handle product selection
-$(document).on('change', '.product-dropdown', function() {
-    var selectedProductId = $(this).val();
-    var parent = $(this).closest('.column');
-
-    if (selectedProductId) {
-        $.ajax({
-            url: "<?php echo $_SERVER['PHP_SELF']; ?>",
-            method: "post",
-            data: { product_id: selectedProductId },
-            dataType: 'json',
-            success: function(data) {
-                if (data) {
-                    parent.find('.costInput').val(data.Sales_Price);
-                    parent.find('.pid').val(data.Id);
-                    parent.find('.pname').val(data.Name); // Update the product name field
-                } else {
-                    parent.find('.costInput').val('');
-                    parent.find('.pid').val('');
-                    parent.find('.pname').val(''); // Clear the product name field if no product is selected
-                }
-            }
-        });
-    } else {
-        parent.find('.costInput').val('');
-        parent.find('.pid').val('');
-        parent.find('.pname').val(''); // Clear the product name field if no product is selected
-    }
-});
-// Handle product selection
-$(document).on('change', '.product-dropdown', function() {
-    var selectedProductId = $(this).val();
-    var parent = $(this).closest('.column');
-
-    if (selectedProductId) {
-        $.ajax({
-            url: "<?php echo $_SERVER['PHP_SELF']; ?>",
-            method: "post",
-            data: { product_id: selectedProductId },
-            dataType: 'json',
-            success: function(data) {
-                if (data) {
-                    parent.find('.costInput').val(data.Sales_Price);
-                    parent.find('.pid').val(data.Id);
-                    parent.find('.pname').val(data.Name); // Update the hidden pname field
-                    parent.find('.pname_display').val(data.Name); // Update the pname_display field
-                } else {
-                    parent.find('.costInput').val('');
-                    parent.find('.pid').val('');
-                    parent.find('.pname').val(''); // Clear the hidden pname field if no product is selected
-                    parent.find('.pname_display').val(''); // Clear the pname_display field if no product is selected
-                }
-            }
-        });
-    } else {
-        parent.find('.costInput').val('');
-        parent.find('.pid').val('');
-        parent.find('.pname').val(''); // Clear the hidden pname field if no product is selected
-        parent.find('.pname_display').val(''); // Clear the pname_display field if no product is selected
-    }
-});
-$(document).ready(function() {
-    // Function to calculate and update total amount
-    function updateTotalAmount() {
-        var totalAmount = 0;
-        $('.amountInput').each(function() {
-            var amount = parseFloat($(this).val());
-            if (!isNaN(amount)) {
-                totalAmount += amount;
-            }
-        });
-        $('#AmountInput').val(totalAmount); 
-    }
-
-    // Event handler for amount input change
-    $(document).on('input', '.amountInput', function() {
-        updateTotalAmount();
-    });
-
-    // Event handler for quantity or cost input change
-    $(document).on('input', '.quantityInput, .costInput', function() {
-        var row = $(this).closest('.column');
-        var quantity = parseFloat(row.find('.quantityInput').val());
-        var cost = parseFloat(row.find('.costInput').val());
-        if (!isNaN(quantity) && !isNaN(cost)) {
-            var amount = quantity * cost;
-            row.find('.amountInput').val(amount);
-            updateTotalAmount();
-        }
-    });
-
-    // Add new row
-    $('#addrow').click(function() {
-        // Your code to add a new row
-        // Remember to call updateTotalAmount() after adding the row
-    });
-
-    // Other JavaScript code
-});
-
     </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 require('config.php');
 require('index.php');
 
-$fetch = "SELECT * FROM `svaluation` as s inner join `Customer` as c on s.Cid = c.Id ";
+$fetch = "SELECT * FROM `svaluation` as s inner join `Customer` as c on s.Cid = c.cusid ";
 $query = mysqli_query($connect , $fetch);
 
 ?>

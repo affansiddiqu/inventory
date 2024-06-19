@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 12, 2024 at 02:56 PM
+-- Generation Time: Jun 19, 2024 at 09:56 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.1.25
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `customer` (
-  `Id` int(11) NOT NULL,
+  `cusid` int(11) NOT NULL,
   `Number` varchar(255) NOT NULL,
   `Customer` varchar(255) NOT NULL,
   `Datee` date NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `customer` (
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`Id`, `Number`, `Customer`, `Datee`, `Reference`, `Quantity`, `Amount`, `Status`) VALUES
+INSERT INTO `customer` (`cusid`, `Number`, `Customer`, `Datee`, `Reference`, `Quantity`, `Amount`, `Status`) VALUES
 (7, 'SD-00001', 'naveed', '2024-06-12', 'qq\r\n\r\n', 0, 0, 1),
 (8, 'SD-00002', 'rohan', '2024-06-27', 'sa', 0, 0, 1),
 (9, 'SD-21474', 'Ramish', '2024-06-27', 'a', 0, 0, 1);
@@ -105,16 +105,16 @@ CREATE TABLE `pro` (
 --
 
 INSERT INTO `pro` (`Id`, `sid`, `cod`, `Name`, `price`, `quantity`, `amount`, `status`) VALUES
-(15, 9, 'SD-00002', 'HS Navy Blue S', 23, 2, 46, 1),
-(17, 10, 'SD-00003', 'HS Yellow S', 100, 11, 1100, 1),
-(18, 10, 'SD-00003', 'HS Yellow S', 100, 11, 1100, 1),
-(19, 10, 'SD-00003', 'HS Yellow S', 100, 11, 1100, 1),
-(20, 10, 'SD-00003', 'HS Yellow S', 100, 11, 1100, 1),
-(21, 11, 'SD-00004', 'HS Navy Blue S', 23, 1, 23, 1),
-(22, 11, 'SD-00004', '266', 19, 121, 2299, 1),
-(23, 12, 'SD-00005', 'HS Black', 390, 100, 39000, 1),
-(24, 12, 'SD-00005', '278', 310, 50, 15500, 1),
-(25, 12, 'SD-00005', '266', 310, 50, 15500, 1);
+(35, 18, 'SD-00001', 'HS Black', 111, 21, 11, 1),
+(37, 19, 'SD-00002', 'HS Pink S', 310, 9, 2790, 1),
+(41, 21, 'SD-00004', 'HS White', 1232, 3, 369, 1),
+(42, 21, 'SD-00004', 'HS White', 1232, 3, 369, 1),
+(43, 22, 'SD-00005', 'HS Navy Blue S', 23, 11, 46, 1),
+(44, 22, 'SD-00005', 'HS Navy Blue S', 23, 11, 46, 1),
+(46, 23, 'SD-00006', 'HS Black', 11, 2, 390, 1),
+(47, 23, 'SD-00006', 'HS Navy Blue S', 8921, 1, 115, 1),
+(48, 24, 'SD-00007', 'HS White', 194, 2, 388, 1),
+(49, 24, 'SD-00007', '276', 23, 2, 46, 1);
 
 -- --------------------------------------------------------
 
@@ -138,7 +138,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`Id`, `Code`, `Name`, `Measurement`, `Category`, `Sales_Price`, `Purchase_Price`, `Status`) VALUES
-(266, 'P-00001', 'HS White', 'Pc', 'Polo', 19, 16, 1),
+(266, 'P-00001', 'HS White', 'Pc', 'Tshirt', 194, 168, 1),
 (275, 'P-00002', 'HS Black', 'Pc', 'Tshirt', 390, 200, 1),
 (276, 'P-00003', 'HS Navy Blue S', 'Pc', 'Tshirt', 23, 12, 1),
 (277, 'P-00004', 'HS Yellow S', 'Pc', 'Tshirt', 100, 80, 1),
@@ -209,9 +209,7 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`Id`, `P_id`, `SCode`, `Type`, `Date`, `Reference`, `Cost`, `Quantity`, `Amount`, `Status`) VALUES
-(234, 278, 'SA-00002', 'Inward Stock', '2024-06-07', 'HS Navy Blue S', 12, 2, 24, 1),
-(235, 276, 'SA-00003', 'Inward Stock', '2024-06-11', 'HS Navy Blue S', 12, 21, 252, 1),
-(236, 277, 'SA-00004', 'Lost of Theft', '2024-05-31', 'HS Yellow S', 280, 1, 280, 1),
+(236, 277, 'SA-00004', 'Opening Stock', '2024-05-31', 'HS Yellow S', 280, 3, 840, 1),
 (237, 275, 'SA-00005', 'Lost of Theft', '2024-05-31', 'HS Black', 280, 2, 560, 1),
 (238, 276, 'SA-00006', 'Opening Stock', '2024-06-07', 'HS Navy Blue S', 12, 2, 24, 1),
 (239, 275, 'SA-00007', 'Lost of Theft', '2024-06-07', 'HS Black', 280, 2, 560, 1),
@@ -279,11 +277,13 @@ CREATE TABLE `svaluation` (
 --
 
 INSERT INTO `svaluation` (`Id`, `Cid`, `Vcode`, `Date`, `Vreference`, `Vquantity`, `vamount`, `Address`, `Comment`, `Status`) VALUES
-(7, 7, 'SD-00001', '2024-05-30', 'aa', 2, 390, '', '', 1),
-(9, 7, 'SD-00002', '2024-05-30', 'gg', 2, 8626, '', '', 1),
-(10, 9, 'SD-00003', '2024-06-14', 'aa', 16, 1365, '', '', 1),
-(11, 7, 'SD-00004', '0001-01-01', '1', 122, 2322, '', '', 1),
-(12, 7, 'SD-00005', '2023-10-10', 'JO18', 200, 70000, '', '', 1);
+(18, 8, 'SD-00001', '2024-04-30', 'ko', 34, 112, '', '', 1),
+(19, 8, 'SD-00002', '2024-06-04', 'ok', 17, 2974, '', '', 1),
+(20, 8, 'SD-00003', '2024-06-14', 'asa', 8, 1381, '77', 'h', 1),
+(21, 8, 'SD-00004', '2024-05-29', '12', 14, 501, '', '', 1),
+(22, 8, 'SD-00005', '2024-06-04', 'qw', 5, 636, '', '', 1),
+(23, 9, 'SD-00006', '2024-05-02', 'f', 211, 121, '', '', 1),
+(24, 8, 'SD-00007', '2024-05-31', 'asa', 4, 434, '', '', 1);
 
 --
 -- Triggers `svaluation`
@@ -313,7 +313,7 @@ DELIMITER ;
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`Id`);
+  ADD PRIMARY KEY (`cusid`);
 
 --
 -- Indexes for table `pro`
@@ -356,13 +356,13 @@ ALTER TABLE `svaluation`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `cusid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `pro`
 --
 ALTER TABLE `pro`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -386,7 +386,7 @@ ALTER TABLE `stock`
 -- AUTO_INCREMENT for table `svaluation`
 --
 ALTER TABLE `svaluation`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Constraints for dumped tables
@@ -408,7 +408,7 @@ ALTER TABLE `stock`
 -- Constraints for table `svaluation`
 --
 ALTER TABLE `svaluation`
-  ADD CONSTRAINT `svaluation_ibfk_1` FOREIGN KEY (`Cid`) REFERENCES `customer` (`Id`);
+  ADD CONSTRAINT `svaluation_ibfk_1` FOREIGN KEY (`Cid`) REFERENCES `customer` (`cusid`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
