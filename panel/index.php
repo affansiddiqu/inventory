@@ -38,7 +38,7 @@
                 <a href=""><i class="fa-sharp fa-regular fa-shirt"></i> Vendor</a>
                 <a href="Product.php"><i class="fa-brands fa-product-hunt"></i> Products</a>
                 <a href=""><i class="fa-solid fa-child"></i> Employee</a>
-                <a href=""><i class="fa-regular fa-user"></i> User</a>
+                <a href="user.php"><i class="fa-regular fa-user"></i> User</a>
             </div>
             <div class="dropdown ms-4">
                 <button onclick="toggleDropdown('dropdown1')" class="dropbtn"><i class="fa fa-bars" aria-hidden="true"></i></button>

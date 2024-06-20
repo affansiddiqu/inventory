@@ -1,79 +1,27 @@
-
 <?php
 // Include database connection
 require('config.php'); // Assuming this file contains database connection code
-
-// Fetch the maximum SKU code
-$query = "SELECT MAX(SUBSTRING(`VCode`, 4)) AS max_code FROM `svaluation`";
-$result = mysqli_query($connect, $query);
-$row = mysqli_fetch_assoc($result);
-$maxCode = $row['max_code'];
-$newCode = 'SD-' . str_pad($maxCode + 1, 5, '0', STR_PAD_LEFT);
+require('index.php'); // Assuming this file contains necessary dashboard functions
 
 if (isset($_POST['submit'])) {
     // Gather form data
-    $customerId = $_POST['cid'];
-    $date = $_POST['date'];
-    $reference = $_POST['reference'];
-    $address = $_POST['address'];
-    $comment = $_POST['comment'];
-    $cost = $_POST['cost'];
-    $quantity = $_POST['tquantity'];
-    $amount = $_POST['AmountInput'];
+    $fname = $_POST['fname'];
+    $lname = $_POST['lname'];
+    $email = $_POST['email'];
+    $upass = $_POST['pass'];
+    $role = $_POST['role'];
 
     // Insert data into the `svaluation` table
-    $query = "INSERT INTO `svaluation` (`VCode`, `Cid`, `Date`, `Vreference`, `Vquantity`, `vamount`, `Address`, `Comment`) VALUES ('$newCode', '$customerId','$date', '$reference', '$quantity','$amount', '$address', '$comment')";
-    mysqli_query($connect, $query);
+    $query = "INSERT INTO `users` (`Uname`,`lname`,`email`,`Upass`, `role`) VALUES ('$fname', '$lname' ,'$email','$upass','$role')";
+    $final = mysqli_query($connect, $query);
 
-    // Get the ID of the inserted row in `svaluation` table
-    $sid = mysqli_insert_id($connect);
-
-    // Insert data into the `pro` table
-    for ($i = 0; $i < count($_POST['pid']); $i++) {
-        $name = $_POST['pid'][$i];
-        $price = $_POST['cost'][$i];
-        $quantitys = $_POST['quantity'][$i];
-        $amounts = $_POST['amount'][$i];
-
-        // Use the same $sid for each product being added
-        $query = "INSERT INTO `pro` (`sid`, `cod`, `Name`, `price`, `quantity`, `amount`) VALUES ('$sid', '$newCode', '$name', '$price', '$quantitys', '$amounts')";
-        mysqli_query($connect, $query); // Execute the query to insert data into `pro` table
-    }
-
-    // Redirect to stockvaluation.php after data insertion
-    header("Location: stockvaluation.php");
-    exit();
-}
-
-if (isset($_POST["query"])) {
-    $output = array();
-    $query = "SELECT * FROM products WHERE Name LIKE '%" . $_POST["query"] . "%'";
-    $res = mysqli_query($connect, $query);
-    if (mysqli_num_rows($res) > 0) {
-        while ($row = mysqli_fetch_assoc($res)) {
-            $output[] = $row;
-        }
-        echo json_encode($output);
+    if ($final) {
+        echo "<script>alert('Add User successful');</script>";
+        exit(); // Ensure that script stops here to prevent further execution
     } else {
-        echo json_encode([]);
+        echo "<script>alert('Error: " . mysqli_error($connect) . "');</script>";
     }
-    exit;
 }
-
-if (isset($_POST["product_id"])) {
-    $product_id = $_POST["product_id"];
-    $query = "SELECT * FROM products WHERE Id = $product_id";
-    $res = mysqli_query($connect, $query);
-    if (mysqli_num_rows($res) > 0) {
-        $product = mysqli_fetch_assoc($res);
-        echo json_encode($product);
-    } else {
-        echo json_encode([]);
-    }
-    exit;
-}
-
-require('index.php'); // Assuming this file contains necessary dashboard functions
 ?>
 
 <!DOCTYPE html>
@@ -94,103 +42,34 @@ require('index.php'); // Assuming this file contains necessary dashboard functio
 </head>
 <body>
     <section class="container">
-        <header>Stock Valuation</header>
+        <header>Add User</header>
         <!-- Form -->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form" id="stockForm" method="post">
             <div class="column">
-                <div class="input-box mt-4">
-                    <?php 
-                    $product = "SELECT * from `customer`  where`status` ='1'";
-                    $result1 = mysqli_query($connect, $product);
-                    if(mysqli_num_rows($result1) > 0) {
-                        ?>
-                        <select class="form-select border-dark" name="cid" aria-label="Default select example" id="sname">
-                            <option selected>Select Customer</option>
-                            <?php
-                            while($row = mysqli_fetch_assoc($result1)){
-                            ?>
-                            <option value="<?php echo $row['cusid']?>" ><?php echo  $row['Customer']?> </option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-                        <?php
-                    }
-                    ?>
+                <div class="input-box">
+                    <label>First Name</label><br>
+                    <input name="fname" class="border border-dark text-dark" required />
                 </div>
                 <div class="input-box">
-                    <label>Number</label><br>
-                    <input readonly name="number" class="border border-dark text-dark" value="<?php echo $newCode; ?>" required />
+                    <label>Last Name</label><br>
+                    <input name="lname" class="border border-dark text-dark" required />
                 </div>
                 <div class="input-box">
-                    <label>Current Date</label><br>
-                    <input type="date" name="date" class="border border-dark text-dark" required />
+                    <label>Email</label><br>
+                    <input type="email" name="email" class="border border-dark text-dark" required />
                 </div>
                 <div class="input-box">
-                    <label>Reference</label><br>
-                    <input type="text" name="reference" class="border border-dark text-dark" required />
+                    <label>Password</label><br>
+                    <input type="password" name="pass" class="border border-dark text-dark" required />
                 </div>
-            </div>
-            <br>
-            <div class="column">
-                <div class="input-box mt-3">
-                    <label>Product Name</label><br>
-                    <select name="query[]" class="product-dropdown border border-dark" required>
-                        <option>Select a product</option>
-                    </select>
-                </div>
-                <input type="hidden" name="pid[]" class="pname" required />
-                <div class="input-box">
-                    <label for="costInput">Cost</label><br>
-                    <input type="number" name="cost[]" id="costInput" required class="costInput text-dark border border-dark" />
                 </div>
                 <div class="input-box">
-                    <label>Stock Quantity</label><br>
-                    <input type="number" name="quantity[]" id="quantity" required class="quantityInput text-dark border border-dark" />
+                    <?php require('per.php') ?>
                 </div>
-                <div class="input-box">
-                    <label>Net Amount</label><br>
-                    <input type="number" name="amount[]" id="netAmount" required class="amountInput text-dark border border-dark" />
-                </div>
-                <i class="fa-solid fa-arrow-down mt-5" name="addrow" id="addrow"></i>
-            </div>
-            <div id="next"></div>
-
-            <div class="row mt-2">
-    <div class="col">
-        <!-- Left side: Product rows -->
-        <div id="productrows">
-            <!-- Existing and dynamically added rows go here -->
-        </div>
-    </div>
-    <div class="col">
-        <!-- Right side: Total Quantity and Total Amount -->
-        <div class="column mt-2">
-            <div class="input-box">
-                <label>Total Quantity</label><br>
-                <input type="text" name="tquantity" id="totalQuantity" class="text-dark border border-dark" readonly />
-            </div>
-            <div class="input-box">
-                <label>Total Amount</label><br>
-                <input type="text" name="AmountInput" id="AmountInput" class="text-dark border border-dark" readonly />
-            </div>
-        </div>
-    </div>
-</div>
-
-   <div class="column mt-2">
-                <div class="input-box">
-                    <label for="text">Shipping Address</label><br>
-                    <textarea class="form-control border border-dark text-dark" name="address" rows="4"></textarea>
-                </div>
-                <div class="input-box">
-                    <label>Comments</label><br>
-                    <textarea class="form-control border border-dark text-dark" name="comment" rows="4"></textarea>
-                </div>
-            </div>
             <input type="submit" class="btn btn-danger mt-3" name="submit" />
         </form>
     </section>
+
 
     <script>
         $(document).ready(function () {

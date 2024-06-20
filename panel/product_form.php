@@ -26,6 +26,7 @@ if(isset($_POST['submit'])){
 
     // $data = mysqli_query($connect , $insertProduct);
     $resultProduct = mysqli_query($connect, $insertProduct);
+    
     if (!$resultProduct) {
         echo "<script>alert('Error: " . mysqli_error($connect) . "');</script>";
     } else {

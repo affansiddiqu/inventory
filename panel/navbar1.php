@@ -19,10 +19,10 @@ if(isset($_SESSION["username"])){
 </html>
 <div class="menu">
     <div class="logo">
-        <img src="images/logo.png" alt="Noorani & Co">
+        <img src="../images/logo.png" alt="Noorani & Co">
     </div>
     <div class="con">
-    <a href="Signup.php" class="btn btn-dark">Sign Up</a>
+    <!-- <a href="Signup.p  hp" class="btn btn-dark">Sign Up</a> -->
     <a href="login.php" class="btn btn-dark">Login</a>
     </div>
 <!-- 

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2024 at 09:56 PM
+-- Generation Time: Jun 20, 2024 at 02:51 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.1.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -105,16 +105,21 @@ CREATE TABLE `pro` (
 --
 
 INSERT INTO `pro` (`Id`, `sid`, `cod`, `Name`, `price`, `quantity`, `amount`, `status`) VALUES
-(35, 18, 'SD-00001', 'HS Black', 111, 21, 11, 1),
-(37, 19, 'SD-00002', 'HS Pink S', 310, 9, 2790, 1),
-(41, 21, 'SD-00004', 'HS White', 1232, 3, 369, 1),
-(42, 21, 'SD-00004', 'HS White', 1232, 3, 369, 1),
-(43, 22, 'SD-00005', 'HS Navy Blue S', 23, 11, 46, 1),
-(44, 22, 'SD-00005', 'HS Navy Blue S', 23, 11, 46, 1),
-(46, 23, 'SD-00006', 'HS Black', 11, 2, 390, 1),
+(46, 23, 'SD-00006', 'HS Navy Blue S', 8921, 1, 115, 1),
 (47, 23, 'SD-00006', 'HS Navy Blue S', 8921, 1, 115, 1),
 (48, 24, 'SD-00007', 'HS White', 194, 2, 388, 1),
-(49, 24, 'SD-00007', '276', 23, 2, 46, 1);
+(49, 24, 'SD-00007', 'HS Black', 23, 2, 46, 1),
+(50, 25, 'SD-00008', 'HS Yellow S', 43, 2, 200, 1),
+(51, 25, 'SD-00008', 'HS Yellow S', 43, 2, 200, 1),
+(52, 26, 'SD-00009', 'HS White', 194, 21, 4462, 1),
+(53, 26, 'SD-00009', 'HS White', 194, 21, 4462, 1),
+(56, 29, 'SD-00010', 'Hs purple', 194, 12, 2328, 1),
+(58, 30, 'SD-00011', 'HS Yellow S', 100, 2, 200, 1),
+(59, 30, 'SD-00011', 'HS Pink S', 310, 2, 620, 1),
+(60, 31, 'SD-00012', 'HS Yellow S', 100, 2, 300, 1),
+(61, 31, 'SD-00012', 'HS Yellow S', 100, 2, 300, 1),
+(62, 32, 'SD-00013', 'HS Black', 390, 1, 390, 1),
+(63, 32, 'SD-00013', 'HS Pink S', 310, 3, 930, 1);
 
 -- --------------------------------------------------------
 
@@ -138,7 +143,7 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`Id`, `Code`, `Name`, `Measurement`, `Category`, `Sales_Price`, `Purchase_Price`, `Status`) VALUES
-(266, 'P-00001', 'HS White', 'Pc', 'Tshirt', 194, 168, 1),
+(266, 'P-00001', 'Hs purple', 'Pc', 'Tshirt', 194, 168, 1),
 (275, 'P-00002', 'HS Black', 'Pc', 'Tshirt', 390, 200, 1),
 (276, 'P-00003', 'HS Navy Blue S', 'Pc', 'Tshirt', 23, 12, 1),
 (277, 'P-00004', 'HS Yellow S', 'Pc', 'Tshirt', 100, 80, 1),
@@ -183,7 +188,8 @@ CREATE TABLE `signup` (
 --
 
 INSERT INTO `signup` (`Id`, `Username`, `Password`, `Status`) VALUES
-(1, 'affan', '$2y$10$AROGV9mseP732RrzYK57XeLjs6kwXL7OPedZVgQm0JGfqkJmihkEW', 1);
+(14, 'affan', '$2y$10$ifG3QB2x95joeUHt/u/w5.RVnsWpoDiDjZjuPie7.QcnctDIova02', 1),
+(15, 'naveed', '$2y$10$I6pWyMu/fANr/BVmbbgwYuJ6Kg9puu1VTX5Ggbi2fmORPC7.YBw3O', 1);
 
 -- --------------------------------------------------------
 
@@ -277,13 +283,14 @@ CREATE TABLE `svaluation` (
 --
 
 INSERT INTO `svaluation` (`Id`, `Cid`, `Vcode`, `Date`, `Vreference`, `Vquantity`, `vamount`, `Address`, `Comment`, `Status`) VALUES
-(18, 8, 'SD-00001', '2024-04-30', 'ko', 34, 112, '', '', 1),
-(19, 8, 'SD-00002', '2024-06-04', 'ok', 17, 2974, '', '', 1),
-(20, 8, 'SD-00003', '2024-06-14', 'asa', 8, 1381, '77', 'h', 1),
-(21, 8, 'SD-00004', '2024-05-29', '12', 14, 501, '', '', 1),
-(22, 8, 'SD-00005', '2024-06-04', 'qw', 5, 636, '', '', 1),
-(23, 9, 'SD-00006', '2024-05-02', 'f', 211, 121, '', '', 1),
-(24, 8, 'SD-00007', '2024-05-31', 'asa', 4, 434, '', '', 1);
+(23, 7, 'SD-00006', '2024-05-09', 'f', 211, 121, '', '', 1),
+(24, 8, 'SD-00007', '2024-05-31', 'asa', 4, 434, '', '', 1),
+(25, 9, 'SD-00008', '2024-05-27', 'ok', 22, 706, '', '', 1),
+(26, 7, 'SD-00009', '2024-06-04', 'ok', 23, 5242, '', '', 1),
+(29, 7, 'SD-00010', '2024-06-19', 'kok', 14, 2374, '', '', 1),
+(30, 7, 'SD-00011', '2024-06-14', 'ok', 4, 820, '', '', 1),
+(31, 7, 'SD-00012', '2024-06-12', 'okok', 4, 600, '', '', 1),
+(32, 8, 'SD-00013', '2024-05-30', 'we', 4, 1320, '', '', 1);
 
 --
 -- Triggers `svaluation`
@@ -304,6 +311,35 @@ CREATE TRIGGER `before_svaluation` BEFORE INSERT ON `svaluation` FOR EACH ROW BE
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `Uid` int(11) NOT NULL,
+  `Uname` varchar(255) NOT NULL,
+  `lname` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `Upass` varchar(255) NOT NULL,
+  `role` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`Uid`, `Uname`, `lname`, `email`, `Upass`, `role`) VALUES
+(1, 'affan', 'khan', 'abca@gmail.com', '321', 'user'),
+(2, 'rohan', 'shikeh', 'r@gmail.com', '123', 'admin'),
+(3, 'khan', 'siddiqui', 'siddiquiaffan701@gmail.com', '1', 'admin'),
+(4, 'affan', 'siddiqui', 'siddiquiaffan701@gmail.com', '1', 'user'),
+(5, 'haider', 'khan', 'abc@gmail.com', '3333', 'user'),
+(6, 'sufyn', 'ahmed', 'a@gmail.com', '212', 'user'),
+(7, 'naveed', 'ahmed', 'a@gmail.com', '21', 'admin'),
+(8, 'haider', 'ahmed', 'a@gmail.com', '21', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -349,6 +385,12 @@ ALTER TABLE `svaluation`
   ADD KEY `Cid` (`Cid`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`Uid`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -362,7 +404,7 @@ ALTER TABLE `customer`
 -- AUTO_INCREMENT for table `pro`
 --
 ALTER TABLE `pro`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -374,7 +416,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `signup`
 --
 ALTER TABLE `signup`
-  MODIFY `Id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `stock`
@@ -386,7 +428,13 @@ ALTER TABLE `stock`
 -- AUTO_INCREMENT for table `svaluation`
 --
 ALTER TABLE `svaluation`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `Uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables

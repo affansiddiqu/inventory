@@ -1,7 +1,6 @@
 <?php
 // Include database connection
 require('config.php'); // Assuming this file contains database connection code
-require('index.php'); // Assuming this file contains database connection code
 
 if(isset($_GET['Id'])) {
     $id = $_GET['Id'];
@@ -27,6 +26,8 @@ if(isset($_GET['Id'])) {
         $comment = $svaluation_row['Comment'];
         $quantity = $svaluation_row['Vquantity'];
         $amount = $svaluation_row['vamount'];
+
+        require('index.php');
 ?>
 
 <!DOCTYPE html>
@@ -41,21 +42,21 @@ if(isset($_GET['Id'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://use.fontawesome.com/ccb21b5b72.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
-    <section class="container">
-        <header>Update Stock Valuation</header>
 
-        <!-- Form -->
-        <form action="svupdatedata.php" class="form" id="stockForm" method="post">
-            <input type="hidden" name="Id" value="<?php echo $id; ?>">
-            
-            <div class="row">
-                <div class="col-md-3 mt-3">
-                    <?php 
+<section class="container">
+
+<h4>Update Stock Valuation</h4>
+
+
+    <form action="svupdatedata.php" method="post">
+        <!-- Input fields with pre-filled data -->
+        <input type="hidden" name="Id" value="<?php echo $id; ?>">
+        <div class="row">
+    <div class="col-md-3 mt-3">
+         <?php 
                     $customerQuery = "SELECT * FROM `customer` WHERE `status` ='1'";
                     $customerResult = mysqli_query($connect, $customerQuery);
                     if(mysqli_num_rows($customerResult) > 0) {
@@ -73,7 +74,7 @@ if(isset($_GET['Id'])) {
                     }
                     ?>
                     </select>
-                </div>
+                   </div>
                 <div class="col-md-3">
                     <label>Number</label><br>
                     <input readonly name="number" class="border border-dark text-dark" value="<?php echo $cod; ?>" required />
@@ -81,118 +82,226 @@ if(isset($_GET['Id'])) {
                 <div class="col-md-3">
                     <label>Current Date</label><br>
                     <input type="date" name="date" class="border border-dark text-dark" value="<?php echo $date;?>" required />
-                </div>
-                <div class="col-md-3">
-                    <label>Reference</label><br>
-                    <input type="text" name="reference" class="border border-dark text-dark" value="<?php echo $reference; ?>" required />
-                </div>
-            </div>
-
+                    </div>
+                    <div class="col-md-3">
+                        <label>Reference</label><br>
+                        <input type="text" name="reference" class="border border-dark text-dark" value="<?php echo $reference; ?>" required />
+                        </div>
+                        </d>
+            <br>
             <?php foreach($pro_rows as $pro_row): ?>
-            <div class="row mt-4">
-                <div class="col-md-3 mt-3">
-                    <select class="form-select border-dark product-select" name="productName[]" aria-label="Default select example">
-                        <option>Select Product</option>
-                        <?php
-                        $productQuery = "SELECT * FROM `products` WHERE `status` ='1'";
-                        $productResult = mysqli_query($connect, $productQuery);
-                        if(mysqli_num_rows($productResult) > 0) {
-                            while($row = mysqli_fetch_assoc($productResult)){
-                                $pId = $row['Id'];
-                                $pName = $row['Name'];
-                        ?>
-                        <option value="<?php echo $pId; ?>" <?php if($pName == $pro_row['Name']) echo "selected"; ?>><?php echo $pName; ?></option>
-                        <?php
-                            }
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label>Price</label><br>
-                    <input type="text" name="price[]" value="<?php echo $pro_row['price']; ?>" class="border border-dark text-dark" required />
-                </div>
-                <div class="col-md-3">
-                    <label>Quantity</label><br>
-                    <input type="text" name="pro_quantity[]" value="<?php echo $pro_row['quantity']; ?>" class="border border-dark text-dark" required />
-                </div>
-                <div class="col-md-3">
-                    <label>Amount</label><br>
-                    <input type="text" name="pro_amount[]" value="<?php echo $pro_row['amount']; ?>" class="border border-dark text-dark" required />
-                </div>
-            </div>
-            <?php endforeach; ?>
-
+                <div class="row mt-4">
+                    <div class="col-3">
+                        <label for="">name</label>
+                    <input type="text" name="productName[]" value="<?php echo $pro_row['Name']; ?>"><br>
+                    </div>
+                    <div class="col-3">
+                        <label for="">price</label>
+                    <input type="text" name="price[]" value="<?php echo $pro_row['price']; ?>"><br>
+                    </div>
+                    <div class="col-3">
+                        <label for="">quantity</label>
+                    <input type="text" name="pro_quantity[]" value="<?php echo $pro_row['quantity']; ?>"><br>
+                    </div>
+                    <div class="col-3">
+                        
+                        <label for="">amount</label>
+                    <input type="text" name="pro_amount[]" value="<?php echo $pro_row['amount']; ?>"><br><br>
+                    </div>
+                    
+                    </div>
+                    <?php endforeach; ?>
+                    <!-- <i class="fa-solid fa-arrow-down mt-5" name="addrow" id="addrow"></i> -->
             <div id="next"></div>
 
-            <div class="row mt-4">
-                <div class="col-md-6">
+            <div class="row">
+                <div class="col-6">
                     <label>Total Quantity</label><br>
-                    <input type="text" name="tquantity" value="<?php echo $quantity; ?>" id="totalQuantity" class="border border-dark text-dark" />
-                </div>        
-                <div class="col-md-6">
-                    <label>Total Amount</label><br>
-                    <input type="text" name="AmountInput" id="AmountInput" value="<?php echo $amount; ?>" class="border border-dark text-dark" />
-                </div>
-            </div>
-
+                <input type="text" name="tquantity" value="<?php echo $quantity;?>" id="totalQuantity" class="text-dark border border-dark" />
+            </div>        
+        <div class="col-6">
+            <label>Total Amount</label><br>
+        <input type="text" name="AmountInput" id="AmountInput" value="<?php echo $amount; ?>"class="text-dark border border-dark" />
+    </div>
+</div>
             <div class="row mt-4">
-                <div class="col-md-6">
-                    <label>Shipping Address</label><br>
-                    <textarea class="form-control border border-dark text-dark" name="address" rows="4"><?php echo $address; ?></textarea>
+                <div class="col-lg-6">
+                    <label for="text">Shipping Address</label><br>
+                    <textarea class="form-control border border-dark text-dark" value="<?php echo $address;?>" name="address" rows="4"></textarea>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <label>Comments</label><br>
-                    <textarea class="form-control border border-dark text-dark" name="comment" rows="4"><?php echo $comment; ?></textarea>
+                    <textarea class="form-control border border-dark text-dark" value="<?php echo $comment;?>" name="comment" rows="4"></textarea>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-2">
+                    <input type="submit" name="update" value="Update Details" class="mt-4 btn btn-danger">
 
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <input type="submit" name="update" value="Update Details" class="btn btn-danger">
                 </div>
             </div>
         </form>
-    </section>
 
-    <script>
-        $(document).ready(function() {
-            // Initialize Select2
-            $('.form-select').select2();
-
-            // Change event for Customer select to update Product select
-            $('#customerId').change(function() {
-                var customerId = $(this).val();
-                $.ajax({
-                    url: 'getProducts.php', // PHP script to fetch products based on customer ID
-                    method: 'POST',
-                    data: { customerId: customerId },
-                    dataType: 'json',
-                    success: function(response) {
-                        // Clear existing options
-                        $('.product-select').html('<option>Select Product</option>');
-                        // Append fetched products
-                        response.forEach(function(product) {
-                            $('.product-select').append('<option value="' + product.productId + '">' + product.productName + ' (' + product.productId + ')</option>');
-                        });
-                        // Trigger change to initialize Select2 again
-                        $('.product-select').trigger('change');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching products:', error);
-                    }
-                });
-            });
-        });
-    </script>
+        </section>
 </body>
 </html>
-
 <?php
     } else {
-        // Data not found for the given ID
-        echo "No data found.";
+        // Data not found for the given ID in the svaluation table
+        echo "Data not found!";
     }
 }
 ?>
-    
+<script>
+    $(document).ready(function() {
+        // Initialize Select2 for product dropdowns
+        $('.product-dropdown').select2({
+            placeholder: "Select a product",
+            ajax: {
+                url: "<?php echo $_SERVER['PHP_SELF']; ?>",
+                type: "POST",
+                dataType: "json",
+                delay: 250,
+                data: function(params) {
+                    return {
+                        query: params.term // search term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: $.map(data, function(item) {
+                            return {
+                                id: item.Id,
+                                text: item.Name
+                            };
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+
+        // Handle product selection
+        $(document).on('change', '.product-dropdown', function() {
+            var selectedProductId = $(this).val();
+            var parent = $(this).closest('.column');
+
+            if (selectedProductId) {
+                $.ajax({
+                    url: "<?php echo $_SERVER['PHP_SELF']; ?>",
+                    method: "post",
+                    data: { product_id: selectedProductId },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data) {
+                            parent.find('.costInput').val(data.Sales_Price);
+                            parent.find('.pid').val(data.Id);
+                            parent.find('.pname').val(data.Name); // Update the hidden pname field
+                            parent.find('.pname_display').val(data.Name); // Update the pname_display field
+                        } else {
+                            parent.find('.costInput').val('');
+                            parent.find('.pid').val('');
+                            parent.find('.pname').val(''); // Clear the hidden pname field if no product is selected
+                            parent.find('.pname_display').val(''); // Clear the pname_display field if no product is selected
+                        }
+                    }
+                });
+            } else {
+                parent.find('.costInput').val('');
+                parent.find('.pid').val('');
+                parent.find('.pname').val(''); // Clear the hidden pname field if no product is selected
+                parent.find('.pname_display').val(''); // Clear the pname_display field if no product is selected
+            }
+        });
+
+        // Function to calculate and update total amount
+        function updateTotalAmount() {
+            var totalAmount = 0;
+            $('.amountInput').each(function() {
+                var amount = parseFloat($(this).val());
+                if (!isNaN(amount)) {
+                    totalAmount += amount;
+                }
+            });
+            $('#AmountInput').val(totalAmount); // Update the total amount input
+        }
+
+        // Event handler for amount input change
+        $(document).on('input', '.amountInput', function() {
+            updateTotalAmount();
+        });
+
+        // Event handler for quantity or cost input change
+        $(document).on('input', '.quantityInput, .costInput', function() {
+            var row = $(this).closest('.column');
+            var quantity = parseFloat(row.find('.quantityInput').val());
+            var cost = parseFloat(row.find('.costInput').val());
+            if (!isNaN(quantity) && !isNaN(cost)) {
+                var amount = quantity * cost;
+                row.find('.amountInput').val(amount);
+                updateTotalAmount();
+            }
+        });
+
+        // Add new row
+        $('#addrow').click(function() {
+            var newrow = `<div class="row mb-3">
+                <div class="column">
+                    <select class="form-control product-dropdown" name="products[]" required>
+                        <option></option>
+                    </select>
+                    <input type="hidden" class="pid" name="pid[]" />
+                    <input type="hidden" class="pname" name="pname[]" />
+                </div>
+                <div class="column">
+                    <input type="number" step="0.01" class="form-control quantityInput" name="quantity[]" required />
+                </div>
+                <div class="column">
+                    <input type="number" step="0.01" class="form-control costInput" name="cost[]" required />
+                </div>
+                <div class="column">
+                    <input type="number" step="0.01" class="form-control amountInput" name="amount[]" readonly />
+                </div>
+                <div class="column">
+                    <button type="button" class="btn btn-danger removerow">Remove</button>
+                </div>
+            </div>`;
+
+            $('#productrows').append(newrow);
+
+            // Initialize Select2 for the newly added product dropdown
+            $('#productrows .product-dropdown:last').select2({
+                placeholder: "Select a product",
+                ajax: {
+                    url: "<?php echo $_SERVER['PHP_SELF']; ?>",
+                    type: "POST",
+                    dataType: "json",
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            query: params.term // search term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: $.map(data, function(item) {
+                                return {
+                                    id: item.Id,
+                                    text: item.Name
+                                };
+                            })
+                        };
+                    },
+                    cache: true
+                }
+            });
+        });
+
+        // Remove row
+        $(document).on('click', '.removerow', function() {
+            $(this).closest('.row').remove();
+            updateTotalAmount();
+        });
+
+    });
+</script>
