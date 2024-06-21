@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2024 at 02:51 PM
+-- Generation Time: Jun 21, 2024 at 02:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -188,8 +188,8 @@ CREATE TABLE `signup` (
 --
 
 INSERT INTO `signup` (`Id`, `Username`, `Password`, `Status`) VALUES
-(14, 'affan', '$2y$10$ifG3QB2x95joeUHt/u/w5.RVnsWpoDiDjZjuPie7.QcnctDIova02', 1),
-(15, 'naveed', '$2y$10$I6pWyMu/fANr/BVmbbgwYuJ6Kg9puu1VTX5Ggbi2fmORPC7.YBw3O', 1);
+(1, 'affan', '$2y$10$ifG3QB2x95joeUHt/u/w5.RVnsWpoDiDjZjuPie7.QcnctDIova02', 1),
+(2, 'rohan', '$2y$10$JDn5DAu5q9iJrgHDfZnj4O7ri0MbiErCdiKNXxQZXRwQEkv87MpQy', 1);
 
 -- --------------------------------------------------------
 
@@ -332,14 +332,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`Uid`, `Uname`, `lname`, `email`, `Upass`, `role`) VALUES
-(1, 'affan', 'khan', 'abca@gmail.com', '321', 'user'),
-(2, 'rohan', 'shikeh', 'r@gmail.com', '123', 'admin'),
-(3, 'khan', 'siddiqui', 'siddiquiaffan701@gmail.com', '1', 'admin'),
-(4, 'affan', 'siddiqui', 'siddiquiaffan701@gmail.com', '1', 'user'),
-(5, 'haider', 'khan', 'abc@gmail.com', '3333', 'user'),
-(6, 'sufyn', 'ahmed', 'a@gmail.com', '212', 'user'),
-(7, 'naveed', 'ahmed', 'a@gmail.com', '21', 'admin'),
-(8, 'haider', 'ahmed', 'a@gmail.com', '21', 'admin');
+(1, 'affan', 'siddiqui', 'affan2@gmail.com', '123', 'dashboard_view,report_view'),
+(2, 'Razzak', 'Khan', 'Razzak@gmail.com', '123', 'dashboard_view,product_view'),
+(3, 'Tahir', 'aslam', 'aslam@gmail.com', '231', 'sv_view,sv_create'),
+(4, 'afaaa', 'ahmd', 'siddiquiaffan701@gmail.com', '1111', 'dashboard_view,product_create,sv_create');
 
 --
 -- Indexes for dumped tables
@@ -416,7 +412,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `signup`
 --
 ALTER TABLE `signup`
-  MODIFY `Id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `Id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `stock`
@@ -434,7 +430,7 @@ ALTER TABLE `svaluation`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `Uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `Uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables

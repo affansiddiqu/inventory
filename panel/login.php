@@ -36,7 +36,7 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
     <div class="login-form">
-        <h1>Member Login</h1>
+        <h1>Admin Login</h1>
         <form action="Login.php" method="post">
             <p>User Name</p>
             <input type="text" name="username" placeholder="User Name">

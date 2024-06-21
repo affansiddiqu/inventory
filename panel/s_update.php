@@ -2,23 +2,6 @@
 // Include database connection
 require('config.php'); // Assuming this file contains database connection code
 
-// if(isset($_POST["query"])){
-//     $output = array(); // Initialize an empty array
-//     $query = "SELECT * FROM products WHERE Name LIKE '%".$_POST["query"]."%'";
-//     $res = mysqli_query($connect, $query); // corrected variable name
-//     if (mysqli_num_rows($res) > 0) {
-//         while ($row = mysqli_fetch_assoc($res)) {
-//             $output[] = $row; // Append each row to the output array
-//         }
-//         echo json_encode($output); // echo the result as JSON array
-        
-//     } else {
-//         header("location:Stock.php");
-//     }
-//     exit; // stop further execution
-// }
-
-
 $stock_Id = $_GET['Id']; 
 
 $query = "select * from `stock` where Id = '{$stock_Id}'";

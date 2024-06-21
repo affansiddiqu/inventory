@@ -1,43 +1,55 @@
-// login.php (simplified example)
 <?php
-session_start();
-require('config.php'); // Database connection
+require("config.php");
+require('nv.php');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+if (isset($_POST['submit'])) {
+    $useremail = mysqli_real_escape_string($connect, $_POST['uemail']);
+    $password = mysqli_real_escape_string($connect, $_POST['upass']);
 
-    // Query to fetch user details
-    $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-    $result = mysqli_query($connect, $query);
+    $check = "SELECT * FROM `users` WHERE email = '$useremail'";
+    $query = mysqli_query($connect, $check);
 
-    if (mysqli_num_rows($result) == 1) {
-        // User found, set session variables
-        $user = mysqli_fetch_assoc($result);
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];
+    if (!$query) {
+        die("Query failed: " . mysqli_error($connect));
+    }
 
-        // Redirect based on role
-        if ($user['role'] == 'admin') {
-            header("Location: admin_page.php"); // Redirect to admin page
+    if (mysqli_num_rows($query) > 0) {
+        $login = mysqli_fetch_assoc($query);
+        $db_password = $login['Upass'];
+
+        if (password_verify($password, $db_password)) {
+            session_start();
+            $_SESSION['uemail'] = $login['email'];
+            header('location: product.php');
+            exit();
         } else {
-            header("Location: user_page.php"); // Redirect to user page
+            echo "<script>alert('Invalid Password')</script>";
         }
-        exit();
     } else {
-        $error = "Invalid username or password";
+        echo "<script>alert('User not found')</script>";
     }
 }
 ?>
 
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-    <input type="text" name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-</form>
-
-<?php
-if (isset($error)) {
-    echo "<p>$error</p>";
-}
-?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="login-form">
+        <h1>User Login</h1>
+        <form action="ulogin.php" method="post">
+            <p>User Email</p>
+            <input type="text" name="uemail" placeholder="User Email">
+            <p>Password</p>
+            <input type="password" name="upass" placeholder="Password">
+            <button name="submit" type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

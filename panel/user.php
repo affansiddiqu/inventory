@@ -67,14 +67,13 @@ $query = mysqli_query($connect , $fetch);
                 <?php while ($row = mysqli_fetch_assoc($query)) {
                      ?>
                     <tr>
-
                     <td><?php echo $row ['Uid']?></td>
                     <td><?php echo $row ['Uname']?></td>
                     <td><?php echo $row ['lname']?></td>
                     <td><?php echo $row ['email']?></td>
                     <td><?php echo $row ['role']?></td>
-                    <td ><a href=""class="btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>  
-                    <td ><a href="" class="btn btn-success"><i class="fa-regular fa-pen-to-square"></i></a></td>  
+                    <td ><a href="user_del.php?Uid=<?php echo $row ['Uid'];?>" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a></td>  
+                    <td ><a href="user_update.php?Uid=<?php echo $row ['Uid'];?>" class="btn btn-success"><i class="fa-regular fa-pen-to-square"></i></a></td>  
                 </tr>
                 <?php
                     }
@@ -109,6 +108,7 @@ $query = mysqli_query($connect , $fetch);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
     <script>
 $(document).ready(function() {
     $('#example').DataTable( {

@@ -14,6 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
+
 <style>
     
 #permission {
@@ -44,7 +45,7 @@
 <body>
 
 <div id="permission">
-    <h6 class="mt-4">Permissions</h6>
+    <h5 class="mt-4">Permissions</h5>
     <hr>
     <div class="permissionContainer">
         <div class="permission">
@@ -53,7 +54,7 @@
                     Dashboard
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">View</p>
+                <p class="modulefun" data-value="dashboard_view">View</p>
                 </div>
             </div>
         </div>
@@ -63,7 +64,7 @@
                     Reports
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">View</p>
+                    <p class="modulefun" data-value="report_view">View</p>
                 </div>
             </div>
         </div>
@@ -73,16 +74,16 @@
                     Products
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">View</p>
+                    <p class="modulefun" data-value="product_view">View</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">Create</p>
+                    <p class="modulefun" data-value="product_create">Create</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">Update</p>
+                    <p class="modulefun" data-value="product_update">Update</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">Delete</p>
+                    <p class="modulefun" data-value="product_delete">Delete</p>
                 </div>
             </div>
         </div>
@@ -92,16 +93,16 @@
                     Stock Adjustment
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">View</p>
+                    <p class="modulefun" data-value="stock_view">View</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">Create</p>
+                    <p class="modulefun" data-value="stock_create">Create</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">Update</p>
+                    <p class="modulefun" data-value="stock_update">Update</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">Delete</p>
+                    <p class="modulefun" data-value="stock_delete">Delete</p>
                 </div>
             </div>
         </div>
@@ -111,29 +112,22 @@
                     Stock Valuation
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">View</p>
+                    <p class="modulefun" data-value="sv_view">View</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">Create</p>
+                    <p class="modulefun" data-value="sv_create">Create</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">Update</p>
+                    <p class="modulefun" data-value="sv_update">Update</p>
                 </div>
                 <div class="col-md-2">
-                    <p class="modulefun">Delete</p>
+                    <p class="modulefun" data-value="sv_delete">Delete</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    $(document).ready(function() {
-        $('.modulefun').click(function() {
-            $(this).toggleClass('permissionactive');
-        });
-    });
-</script>
     
 </body>
 </html>
